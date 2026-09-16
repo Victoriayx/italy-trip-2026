@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <meta name="theme-color" content="#0a0f16">
+  <meta name="theme-color" content="#f7f1e6">
   <meta name="description" content="2026 意大利 11 日行程，包含航班、酒店、城际交通和票据汇总。">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -464,9 +464,107 @@ dialog.editor-dialog::backdrop { background: rgba(0,0,0,.65); backdrop-filter: b
 .editor-form input[type="file"] { padding: 8px; color: var(--muted); }
 .editor-form input[type="file"]::file-selector-button { margin-right: 9px; border: 1px solid var(--line); border-radius: 8px; padding: 7px 9px; color: var(--text); background: var(--panel-3); cursor: pointer; }
 
+/* Light Italian editorial theme */
+body.theme-italian {
+  color-scheme: light;
+  --bg: #f6f1e7;
+  --bg-soft: #f1e9dc;
+  --panel: #fffdf9;
+  --panel-2: #f6ecdc;
+  --panel-3: #eadbc5;
+  --line: rgba(91,72,52,.15);
+  --line-strong: rgba(91,72,52,.28);
+  --text: #2d2a24;
+  --muted: #6f675d;
+  --muted-2: #968b7d;
+  --gold: #b45f45;
+  --gold-soft: rgba(180,95,69,.1);
+  --blue: #315f83;
+  --blue-soft: rgba(49,95,131,.1);
+  --green: #4f7a62;
+  --green-soft: rgba(79,122,98,.1);
+  --red: #b44c48;
+  --red-soft: rgba(180,76,72,.09);
+  --violet: #7b658f;
+  --violet-soft: rgba(123,101,143,.1);
+  --cyan: #438299;
+  --cyan-soft: rgba(67,130,153,.1);
+  background:
+    radial-gradient(circle at 88% 2%, rgba(197,126,95,.14), transparent 24rem),
+    radial-gradient(circle at 2% 30%, rgba(85,124,105,.1), transparent 27rem),
+    #f6f1e7;
+  color: var(--text);
+}
+.theme-italian .topbar { background: linear-gradient(to bottom, rgba(246,241,231,.98), rgba(246,241,231,.86), transparent); }
+.theme-italian .brand-mark { border-color: rgba(180,95,69,.35); background: #fff9f1; color: var(--gold); box-shadow: 0 5px 18px rgba(111,83,57,.08); }
+.theme-italian .brand small { color: #8c8173; }
+.theme-italian .icon-btn, .theme-italian .ghost-btn { background: rgba(255,253,249,.88); color: var(--text); border-color: var(--line); box-shadow: 0 4px 14px rgba(100,78,53,.06); }
+.theme-italian .icon-btn.active { color: var(--gold); background: var(--gold-soft); border-color: rgba(180,95,69,.35); }
+.theme-italian .ghost-btn.accent { color: #fff; background: var(--gold); border-color: var(--gold); }
+.theme-italian .hero {
+  border-color: rgba(135,103,70,.16);
+  background:
+    linear-gradient(135deg, rgba(255,255,255,.85), rgba(255,248,238,.76)),
+    linear-gradient(120deg, #f8e9d8 0%, #edf1e8 58%, #dce9ec 100%);
+  color: var(--text);
+  box-shadow: 0 20px 45px rgba(112,85,56,.12);
+}
+.theme-italian .hero::after { border-color: rgba(180,95,69,.16); box-shadow: 0 0 0 26px rgba(180,95,69,.035), 0 0 0 58px rgba(79,122,98,.025); }
+.theme-italian .hero h1 { font-family: Georgia, "Times New Roman", "Songti SC", serif; color: #2e2a23; }
+.theme-italian .eyebrow { color: var(--gold); }
+.theme-italian .hero-route { color: #5e574d; }
+.theme-italian .meta-chip { color: #514b42; background: rgba(255,255,255,.6); border-color: rgba(91,72,52,.14); }
+.theme-italian .meta-chip strong { color: var(--gold); }
+.theme-italian .hero-actions { position: relative; z-index: 2; display: flex; flex-wrap: wrap; align-items: center; gap: 10px; margin-top: 18px; color: var(--muted); font-size: 11px; }
+.theme-italian .tabs { background: rgba(255,253,249,.9); border-color: var(--line); box-shadow: 0 9px 26px rgba(100,78,53,.08); }
+.theme-italian .tab { color: #7d7469; }
+.theme-italian .tab.active { color: #fff; background: var(--gold); }
+.theme-italian .section-head h2, .theme-italian .region-head h3, .theme-italian .day-copy h3 { font-family: Georgia, "Times New Roman", "Songti SC", serif; }
+.theme-italian .note-strip { color: #745647; background: rgba(180,95,69,.07); border-color: rgba(180,95,69,.18); }
+.theme-italian .filter { background: #fffaf2; color: #786f63; border-color: var(--line); }
+.theme-italian .filter.active { color: var(--gold); background: rgba(180,95,69,.09); border-color: rgba(180,95,69,.34); }
+.theme-italian .day-list { gap: 14px; }
+.theme-italian .day-card { background: rgba(255,253,249,.96); border-color: rgba(91,72,52,.14); box-shadow: 0 10px 26px rgba(100,78,53,.075); }
+.theme-italian .day-summary { background: linear-gradient(90deg, rgba(180,95,69,.06), transparent 45%); }
+.theme-italian .date-block .num { color: #2f2b25; font-family: Georgia, "Times New Roman", serif; }
+.theme-italian .date-block .week, .theme-italian .day-count { color: #8f8476; }
+.theme-italian .day-copy p, .theme-italian .event-detail, .theme-italian .panel p { color: #6f675d; }
+.theme-italian .day-body { border-top-color: var(--line); }
+.theme-italian .utility-disclosure { background: rgba(255,255,255,.66); border-color: rgba(91,72,52,.14); }
+.theme-italian .utility-disclosure.smart-adjust { background: rgba(49,95,131,.055); border-color: rgba(49,95,131,.16); }
+.theme-italian .utility-disclosure.recommendation-panel { background: rgba(180,95,69,.055); border-color: rgba(180,95,69,.16); }
+.theme-italian .utility-disclosure > summary { color: #4d5f6a; }
+.theme-italian .utility-disclosure.recommendation-panel > summary { color: #8b513f; }
+.theme-italian .recommendation-body, .theme-italian .smart-inner { color: #625b52; }
+.theme-italian .timeline-item:not(:last-child)::after { background: rgba(119,99,77,.2); }
+.theme-italian .timeline-dot { background: #f4eadc; border-color: var(--line); }
+.theme-italian .event-title { color: #302d28; }
+.theme-italian .mini-link { color: #635d55; background: rgba(255,255,255,.78); border-color: var(--line); }
+.theme-italian .mini-link:hover { background: #fff; }
+.theme-italian .status.confirmed { color: #3f7057; background: rgba(79,122,98,.1); }
+.theme-italian .status.suggested { color: #a35b3e; background: rgba(180,95,69,.1); }
+.theme-italian .status.todo { color: #a84440; background: rgba(180,76,72,.09); }
+.theme-italian .status.booked { color: #315f83; background: rgba(49,95,131,.1); }
+.theme-italian .panel, .theme-italian .receipt-timeline { background: rgba(255,253,249,.96); border-color: var(--line); box-shadow: 0 9px 24px rgba(100,78,53,.07); }
+.theme-italian .stay-address, .theme-italian .stay-meta small { color: var(--muted); }
+.theme-italian .stay-meta div { background: rgba(180,95,69,.045); }
+.theme-italian .ticket-icon { background: #f3e8d8; }
+.theme-italian .receipt-amount strong { color: var(--gold); }
+.theme-italian .file-chip { color: #3f7057; background: rgba(79,122,98,.08); border-color: rgba(79,122,98,.2); }
+.theme-italian .bottom-nav { background: rgba(255,253,249,.94); border-color: var(--line); box-shadow: 0 14px 38px rgba(100,78,53,.17); }
+.theme-italian .bottom-nav a { color: #7c7367; }
+.theme-italian .bottom-nav a.active { color: var(--gold); background: rgba(180,95,69,.09); }
+.theme-italian dialog.editor-dialog { color: var(--text); background: #fffdf9; border-color: var(--line-strong); }
+.theme-italian dialog.editor-dialog::backdrop { background: rgba(67,54,42,.35); }
+.theme-italian .dialog-head { border-bottom-color: var(--line); }
+.theme-italian .editor-form label, .theme-italian .prompt-note { color: var(--muted); }
+.theme-italian .editor-form input, .theme-italian .editor-form select, .theme-italian .editor-form textarea, .theme-italian .smart-input, .theme-italian .prompt-box { color: var(--text); background: #fffaf3; border-color: var(--line); }
+.theme-italian .editor-form input:focus, .theme-italian .editor-form select:focus, .theme-italian .editor-form textarea:focus, .theme-italian .smart-input:focus { outline-color: rgba(180,95,69,.25); border-color: rgba(180,95,69,.45); }
+.theme-italian .toast { background: #fffdf9; color: var(--text); border-color: var(--line); }
+
   </style>
 </head>
-<body>
+<body class="theme-italian">
   <div class="app-shell">
     <header class="topbar">
       <div class="brand">
@@ -487,32 +585,13 @@ dialog.editor-dialog::backdrop { background: rgba(0,0,0,.65); backdrop-filter: b
         <div class="hero-meta">
           <span class="meta-chip">4 段住宿</span>
           <span class="meta-chip">2 段国际航班</span>
+          <span class="meta-chip">10/01 22:00 上海浦东 T2 出发</span>
+          <span class="meta-chip">首晚 Doria Grand</span>
+          <span class="meta-chip">人均已确认 <strong id="heroTotal">计算中</strong></span>
           <span class="meta-chip">10 月 2 日抵达米兰</span>
           <span class="meta-chip">10 月 10 日晚返程</span>
         </div>
-      </section>
-
-      <section class="quick-grid" aria-label="行程摘要">
-        <a class="quick-card" href="#travel" data-quick="travel">
-          <small>去程航班</small>
-          <strong>10/01 22:00</strong>
-          <span>上海浦东 T2 出发</span>
-        </a>
-        <a class="quick-card" href="#stays" data-quick="stays">
-          <small>首晚住宿</small>
-          <strong>Doria Grand</strong>
-          <span>米兰 · 10/02-10/03</span>
-        </a>
-        <a class="quick-card" href="#tickets" data-quick="tickets">
-          <small>人均已确认</small>
-          <strong id="quickTotal">计算中</strong>
-          <span>机票 + 住宿</span>
-        </a>
-        <button class="quick-card" id="installBtn" type="button">
-          <small>手机使用</small>
-          <strong>添加到主屏</strong>
-          <span>像 App 一样打开</span>
-        </button>
+        <div class="hero-actions"><button class="ghost-btn accent" id="installBtn" type="button">添加到主屏</button><span>手机浏览器可像 App 一样使用</span></div>
       </section>
 
       <nav class="tabs" aria-label="内容切换">
@@ -1127,26 +1206,13 @@ function renderEditableDay(day, dayIndex) {
   const rec = day.recommendation || { title: "待补充", intro: "", items: [] };
   const recommendationHtml = `<details class="utility-disclosure recommendation-panel"><summary><span>当日建议 · ${escapeHtml(rec.title)}</span><small>展开</small></summary><div class="recommendation-body">${rec.intro ? `<p>${escapeHtml(rec.intro)}</p>` : ""}${rec.items?.length ? `<ul>${rec.items.map((item) => `<li>${escapeHtml(item)}</li>`).join("")}</ul>` : "<p>暂无建议，可在本日输入框里说明你的偏好。</p>"}</div></details>`;
   const smartPanelHtml = `<details class="utility-disclosure smart-adjust"><summary><span>一句话调整这一天</span><small>交给 Codex</small></summary><div class="smart-inner"><p>直接写你的想法，例如“太赶了，上午只去斗兽场，下午加万神殿，晚上去掉西班牙广场”。</p><textarea class="smart-input" data-day="${dayIndex}" placeholder="输入这一天的修改要求，不需要按格式填写"></textarea><div class="smart-actions"><span class="smart-caption">生成后复制回当前 Codex 对话发送即可。</span><button class="ghost-btn accent smart-submit" type="button" data-day="${dayIndex}">生成修改指令</button></div></div></details>`;
-  return `<details class="day-card" ${dayIndex === 0 ? "open" : ""}><summary class="day-summary"><div class="date-block"><div class="day">${escapeHtml(day.day)}</div><div class="num">${Number(day.date.slice(5, 7))}/${dateNum}</div><div class="week">${escapeHtml(day.weekday)}</div></div><div class="day-copy"><h3>${escapeHtml(day.city)}</h3><p>${escapeHtml(day.summary)} · 住宿：${escapeHtml(day.stay)}</p></div><span class="day-count">${visibleEvents.length} 项</span><div class="chevron" aria-hidden="true">⌄</div></summary><div class="day-body"><div class="day-utility-bar">${smartPanelHtml}${recommendationHtml}</div><div class="timeline">${eventHtml || '<div class="empty-box">当前筛选下没有行程</div>'}</div></div></details>`;
+  return `<details class="day-card" ${dayIndex === 0 ? "open" : ""}><summary class="day-summary"><div class="date-block"><div class="num">${Number(day.date.slice(5, 7))}/${dateNum}</div><div class="week">${escapeHtml(day.weekday)}</div></div><div class="day-copy"><h3>${escapeHtml(day.city)}</h3><p>${escapeHtml(day.summary)} · 住宿：${escapeHtml(day.stay)}</p></div><span class="day-count">${visibleEvents.length} 项</span><div class="chevron" aria-hidden="true">⌄</div></summary><div class="day-body"><div class="day-utility-bar">${smartPanelHtml}${recommendationHtml}</div><div class="timeline">${eventHtml || '<div class="empty-box">当前筛选下没有行程</div>'}</div></div></details>`;
 }
 
 function enhancedRenderDays() {
   const container = document.querySelector("#dayList");
   if (!container) return;
-  const allDayIds = new Set(days.map((day) => day.id));
-  const groups = REGION_GROUPS.map((group) => ({ ...group, dayIds: group.dayIds.filter((id) => allDayIds.has(id)) }));
-  const known = new Set(groups.flatMap((group) => group.dayIds));
-  const leftovers = days.filter((day) => !known.has(day.id)).map((day) => day.id);
-  if (leftovers.length) groups.push({ id: "custom", title: "新增行程", kicker: "CUSTOM", dayIds: leftovers, note: "自行补充的日期" });
-  const html = groups.map((group) => {
-    const groupDays = group.dayIds.map((id) => days.find((day) => day.id === id)).filter(Boolean);
-    const renderedDays = groupDays.map((day) => renderEditableDay(day, days.indexOf(day))).filter(Boolean).join("");
-    if (!renderedDays) return "";
-    const dates = groupDays.map((day) => day.date).sort();
-    const range = dates.length ? `${dates[0].slice(5).replace("-", "/")} - ${dates[dates.length - 1].slice(5).replace("-", "/")}` : "";
-    const stayNames = [...new Set(groupDays.map((day) => day.stay).filter((value) => value && value !== "飞机上" && value !== "到家" && value !== "待定"))];
-    return `<section class="region-card"><header class="region-head"><div><div class="region-kicker">${escapeHtml(group.kicker)}</div><h3>${escapeHtml(group.title)}</h3><p>${escapeHtml(group.note)} · ${escapeHtml(range)}</p></div>${stayNames.length ? `<div class="region-stay"><small>住宿</small><strong>${escapeHtml(stayNames.join(" / "))}</strong></div>` : ""}</header><div class="region-day-list">${renderedDays}</div></section>`;
-  }).join("");
+  const html = days.map((day) => renderEditableDay(day, days.indexOf(day))).filter(Boolean).join("");
   container.innerHTML = html || `<div class="panel"><p>当前筛选下没有行程。</p></div>`;
 }
 
@@ -1231,7 +1297,7 @@ function enhancedRenderTickets() {
 function enhancedRenderExpenses() {
   const totals = receiptTotals();
   const box = document.querySelector("#expenseList");
-  const quickTotal = document.querySelector("#quickTotal");
+  const quickTotal = document.querySelector("#heroTotal") || document.querySelector("#quickTotal");
   if (quickTotal) quickTotal.textContent = currency.format(totals.perPerson);
   if (!box) return;
   const categoryRows = Object.entries(RECEIPT_CATEGORIES).map(([key, meta]) => {
