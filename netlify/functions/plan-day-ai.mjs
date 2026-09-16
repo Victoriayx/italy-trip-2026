@@ -47,8 +47,9 @@ function jsonResponse(body, status = 200) {
 
 export default async function handler(request) {
   if (request.method !== "POST") return jsonResponse({ error: "Method not allowed" }, 405);
-  const apiKey = process.env.OPENAI_API_KEY;
-  if (!apiKey) return jsonResponse({ error: "Missing OPENAI_API_KEY" }, 500);
+  const apiKey = process.env.OPENAI_API_KEY || process.env.NETLIFY_AI_GATEWAY_KEY;
+  const baseUrl = (process.env.OPENAI_BASE_URL || process.env.NETLIFY_AI_GATEWAY_URL || "https://api.openai.com/v1").replace(/\/$/, "");
+  if (!apiKey) return jsonResponse({ error: "Missing OpenAI-compatible AI credential" }, 500);
 
   let payload;
   try { payload = await request.json(); } catch { return jsonResponse({ error: "Invalid JSON" }, 400); }
@@ -74,7 +75,7 @@ export default async function handler(request) {
   ];
 
   try {
-    const response = await fetch("https://api.openai.com/v1/responses", {
+    const response = await fetch(`${baseUrl}/responses`, {
       method: "POST",
       headers: {
         "Authorization": `Bearer ${apiKey}`,
