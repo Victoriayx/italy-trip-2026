@@ -8,7 +8,7 @@
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="apple-mobile-web-app-title" content="意大利行程">
-  <title>意大利 11 日行程</title>
+  <title>Italian Journey 2026</title>
   <style>
 :root {
   color-scheme: dark;
@@ -562,6 +562,143 @@ body.theme-italian {
 .theme-italian .editor-form input:focus, .theme-italian .editor-form select:focus, .theme-italian .editor-form textarea:focus, .theme-italian .smart-input:focus { outline-color: rgba(180,95,69,.25); border-color: rgba(180,95,69,.45); }
 .theme-italian .toast { background: #fffdf9; color: var(--text); border-color: var(--line); }
 
+/* advanced-science-ui / editorial-museum refinement */
+body.theme-italian {
+  --bg: #f3eee4;
+  --panel: #fffdf8;
+  --panel-2: #f5ebdc;
+  --panel-3: #e9d9c3;
+  --line: rgba(74,61,46,.16);
+  --line-strong: rgba(74,61,46,.31);
+  --text: #23211d;
+  --muted: #6c665e;
+  --muted-2: #958b7f;
+  --gold: #a8543b;
+  --gold-soft: rgba(168,84,59,.08);
+  --blue: #2f5b76;
+  --blue-soft: rgba(47,91,118,.08);
+  --green: #4a7059;
+  --green-soft: rgba(74,112,89,.08);
+  background:
+    linear-gradient(rgba(255,255,255,.38), rgba(255,255,255,.38)),
+    repeating-linear-gradient(0deg, rgba(85,69,50,.018) 0 1px, transparent 1px 4px),
+    #f3eee4;
+}
+.theme-italian .app-shell { width: min(1180px, 100%); }
+.theme-italian .topbar { padding-top: 18px; border-bottom: 1px solid rgba(74,61,46,.08); }
+.theme-italian .brand-mark { width: 34px; height: 34px; border-radius: 50%; }
+.theme-italian .brand { font-family: Georgia, "Times New Roman", "Songti SC", serif; font-size: 14px; letter-spacing: .02em; }
+.theme-italian .brand small { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; letter-spacing: .14em; }
+.theme-italian .icon-btn, .theme-italian .ghost-btn { border-radius: 2px; box-shadow: none; background: rgba(255,253,248,.68); }
+.theme-italian .hero {
+  min-height: 390px;
+  padding: clamp(32px, 6vw, 72px);
+  border-radius: 3px;
+  box-shadow: none;
+  background:
+    linear-gradient(105deg, rgba(255,253,248,.96) 0%, rgba(255,249,240,.9) 47%, rgba(224,232,226,.86) 100%);
+}
+.theme-italian .hero::before { content: ""; position: absolute; inset: 20px; border: 1px solid rgba(74,61,46,.12); pointer-events: none; }
+.theme-italian .hero::after { content: "ITALIA"; right: clamp(28px, 5vw, 68px); bottom: clamp(4px, 3vw, 32px); width: auto; height: auto; border: 0; border-radius: 0; box-shadow: none; color: rgba(168,84,59,.075); font-family: Georgia, "Times New Roman", serif; font-size: clamp(68px, 13vw, 152px); font-weight: 700; line-height: .8; letter-spacing: -.06em; }
+.theme-italian .eyebrow { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; letter-spacing: .24em; font-size: 10px; }
+.theme-italian .hero h1 { max-width: 850px; margin: 14px 0 20px; font-size: clamp(56px, 10vw, 108px); line-height: .9; letter-spacing: -.065em; font-weight: 700; }
+.theme-italian .hero-route { max-width: 760px; color: #504a42; font-size: 15px; letter-spacing: .02em; }
+.theme-italian .hero-meta { position: relative; z-index: 2; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0; margin-top: 34px; border-top: 1px solid rgba(74,61,46,.18); border-bottom: 1px solid rgba(74,61,46,.18); }
+.theme-italian .meta-chip { min-width: 0; padding: 13px 16px; border: 0; border-right: 1px solid rgba(74,61,46,.14); border-radius: 0; background: transparent; color: #4c463f; font-size: 11px; line-height: 1.45; }
+.theme-italian .meta-chip:first-child { padding-left: 0; }
+.theme-italian .meta-chip:last-child { border-right: 0; }
+.theme-italian .meta-chip strong { display: block; margin-top: 4px; color: ##a8543b; font-family: Georgia, "Times New Roman", serif; font-size: 18px; }
+.theme-italian .tabs { top: 70px; gap: 28px; padding: 0 4px; border: 0; border-bottom: 1px solid rgba(74,61,46,.18); border-radius: 0; background: rgba(243,238,228,.94); box-shadow: none; }
+.theme-italian .tab { position: relative; padding: 13px 2px 11px; border-radius: 0; color: #756d63; font-family: Georgia, "Times New Roman", "Songti SC", serif; font-size: 14px; }
+.theme-italian .tab.active { color: var(--gold); background: transparent; box-shadow: inset 0 -2px 0 var(--gold); }
+.theme-italian .note-strip { margin: 22px 0 8px; padding: 10px 0 10px 16px; border: 0; border-left: 2px solid rgba(168,84,59,.5); border-radius: 0; color: #6a6259; background: transparent; font-family: Georgia, "Times New Roman", "Songti SC", serif; font-style: italic; line-height: 1.7; }
+.theme-italian .section-head { margin-top: 28px; padding-bottom: 10px; border-bottom: 1px solid rgba(74,61,46,.16); }
+.theme-italian .section-head h2 { font-size: clamp(26px, 4vw, 34px); letter-spacing: -.035em; }
+.theme-italian .section-head p { margin-top: 6px; letter-spacing: .04em; }
+.theme-italian .filter { padding: 7px 2px; border: 0; border-bottom: 1px solid transparent; border-radius: 0; background: transparent; font-family: Georgia, "Times New Roman", "Songti SC", serif; }
+.theme-italian .filter.active { border-bottom-color: var(--gold); color: var(--gold); background: transparent; }
+.theme-italian .day-list { gap: 20px; margin-top: 12px; }
+.theme-italian .day-card { border-radius: 2px; border-color: rgba(74,61,46,.16); box-shadow: 0 8px 0 rgba(74,61,46,.025); }
+.theme-italian .day-summary { padding: 20px 18px; background: none; border-left: 3px solid var(--gold); }
+.theme-italian .date-block { text-align: left; padding-left: 4px; }
+.theme-italian .date-block .num { font-size: 34px; }
+.theme-italian .day-copy h3 { font-size: 19px; letter-spacing: -.02em; }
+.theme-italian .day-body { padding: 4px 18px 18px; }
+.theme-italian .day-utility-bar { gap: 0; margin-top: 8px; border-top: 1px solid rgba(74,61,46,.13); border-bottom: 1px solid rgba(74,61,46,.13); }
+.theme-italian .utility-disclosure { border: 0; border-right: 1px solid rgba(74,61,46,.13); border-radius: 0; background: transparent; }
+.theme-italian .utility-disclosure:last-child { border-right: 0; }
+.theme-italian .utility-disclosure[open] { border-right: 0; border-bottom: 1px solid rgba(74,61,46,.1); }
+.theme-italian .utility-disclosure > summary { min-height: 44px; padding: 12px 14px; font-family: Georgia, "Times New Roman", "Songti SC", serif; font-weight: 600; }
+.theme-italian .timeline { margin-top: 10px; }
+.theme-italian .timeline-item { padding: 11px 0; }
+.theme-italian .timeline-item:not(:last-child)::after { left: 66px; top: 37px; background: rgba(74,61,46,.17); }
+.theme-italian .timeline-dot { width: 25px; height: 25px; border-radius: 50%; background: var(--panel); border-color: rgba(74,61,46,.2); box-shadow: 0 0 0 4px var(--panel); }
+.theme-italian .timeline-time { color: #7f766b; letter-spacing: .02em; }
+.theme-italian .event-title { font-family: Georgia, "Times New Roman", "Songti SC", serif; font-weight: 600; }
+.theme-italian .status { padding: 0; border-radius: 0; background: transparent !important; font-size: 9px; letter-spacing: .08em; }
+.theme-italian .status::before { content: "/ "; opacity: .55; }
+.theme-italian .mini-link { padding: 4px 7px; border-radius: 2px; background: transparent; }
+.theme-italian .panel, .theme-italian .receipt-timeline { border-radius: 2px; box-shadow: none; }
+.theme-italian .bottom-nav { border-radius: 2px; box-shadow: 0 8px 24px rgba(74,61,46,.12); }
+.theme-italian dialog.editor-dialog { border-radius: 3px; }
+@media (max-width: 760px) {
+  .theme-italian .hero { min-height: 320px; }
+  .theme-italian .hero::before { inset: 12px; }
+  .theme-italian .hero::after { display: none; }
+  .theme-italian .hero h1 { font-size: clamp(44px, 15vw, 66px); }
+  .theme-italian .hero-meta { grid-template-columns: 1fr; margin-top: 24px; }
+  .theme-italian .meta-chip, .theme-italian .meta-chip:first-child { padding: 11px 0; border-right: 0; border-bottom: 1px solid rgba(74,61,46,.12); }
+  .theme-italian .meta-chip:last-child { border-bottom: 0; }
+  .theme-italian .tabs { gap: 18px; overflow-x: auto; }
+  .theme-italian .day-summary { border-left-width: 2px; }
+}
+
+/* Use Microsoft YaHei consistently across the full interface. */
+body.theme-italian,
+body.theme-italian button,
+body.theme-italian input,
+body.theme-italian select,
+body.theme-italian textarea,
+body.theme-italian h1,
+body.theme-italian h2,
+body.theme-italian h3,
+body.theme-italian h4,
+body.theme-italian summary,
+body.theme-italian strong,
+body.theme-italian .brand,
+body.theme-italian .hero h1,
+body.theme-italian .section-head h2,
+body.theme-italian .day-copy h3,
+body.theme-italian .event-title,
+body.theme-italian .tab,
+body.theme-italian .filter,
+body.theme-italian .meta-chip,
+body.theme-italian .receipt-amount {
+  font-family: "Microsoft YaHei", "微软雅黑", "PingFang SC", sans-serif !important;
+}
+body.theme-italian .hero h1 { letter-spacing: -.055em; font-weight: 700; }
+body.theme-italian .date-block .num { font-family: "Microsoft YaHei", "微软雅黑", sans-serif !important; }
+
+/* Keep date and destination clearly separated. */
+.theme-italian .day-summary {
+  grid-template-columns: 104px minmax(0, 1fr) auto auto;
+  column-gap: 16px;
+}
+.theme-italian .date-block {
+  position: relative;
+  padding-right: 16px;
+  border-right: 1px solid rgba(74,61,46,.17);
+}
+.theme-italian .date-block .num { white-space: nowrap; }
+.theme-italian .day-copy { padding-left: 3px; }
+@media (max-width: 760px) {
+  .theme-italian .day-summary {
+    grid-template-columns: 82px minmax(0, 1fr) auto;
+    column-gap: 13px;
+  }
+  .theme-italian .date-block { padding-right: 12px; }
+}
+
   </style>
 </head>
 <body class="theme-italian">
@@ -580,18 +717,9 @@ body.theme-italian {
     <main>
       <section class="hero" aria-labelledby="tripTitle">
         <div class="eyebrow">2026.10.01 - 10.11 · 2 TRAVELERS</div>
-        <h1 id="tripTitle">意大利 11 日</h1>
+        <h1 id="tripTitle">ITALIAN JOURNEY</h1>
         <div class="hero-route">上海 · 德里 · 米兰 · 索伦托 · 阿马尔菲 · 卡普里 · 罗马</div>
-        <div class="hero-meta">
-          <span class="meta-chip">4 段住宿</span>
-          <span class="meta-chip">2 段国际航班</span>
-          <span class="meta-chip">10/01 22:00 上海浦东 T2 出发</span>
-          <span class="meta-chip">首晚 Doria Grand</span>
-          <span class="meta-chip">人均已确认 <strong id="heroTotal">计算中</strong></span>
-          <span class="meta-chip">10 月 2 日抵达米兰</span>
-          <span class="meta-chip">10 月 10 日晚返程</span>
-        </div>
-        <div class="hero-actions"><button class="ghost-btn accent" id="installBtn" type="button">添加到主屏</button><span>手机浏览器可像 App 一样使用</span></div>
+        <div class="hero-meta"><span class="meta-chip">10/01 22:00 上海浦东 T2 出发</span><span class="meta-chip">10/10 21:15 米兰马尔彭萨 T1 返程</span><span class="meta-chip">人均已花费 <strong id="heroTotal">计算中</strong></span></div>
       </section>
 
       <nav class="tabs" aria-label="内容切换">
