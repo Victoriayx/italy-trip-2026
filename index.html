@@ -8,7 +8,8 @@
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="apple-mobile-web-app-title" content="意大利行程">
-  <title>Italian Journey 2026</title>
+  <link rel="manifest" href="./manifest.webmanifest">
+  <link rel="apple-touch-icon" href="./icons/apple-touch-icon.png">
   <style>
 :root {
   color-scheme: dark;
@@ -699,7 +700,10 @@ body.theme-italian .date-block .num { font-family: "Microsoft YaHei", "微软雅
   .theme-italian .date-block { padding-right: 12px; }
 }
 
+.timeline-item.bus .timeline-dot { color: #8a6845; background: rgba(138,104,69,.1); }
+
   </style>
+  <title>Italian Journey 2026</title>
 </head>
 <body class="theme-italian">
   <div class="app-shell">
@@ -731,10 +735,10 @@ body.theme-italian .date-block .num { font-family: "Microsoft YaHei", "微软雅
 
       <section class="tab-panel active" id="panel-itinerary" aria-labelledby="itineraryHeading">
         <div class="note-strip">
-          已从机票和酒店材料中自动填充确认信息。每天可直接写下修改想法，生成给 Codex 的指令；未预订内容继续标记为“建议”或“待补”。
+          已从机票和酒店材料中自动填充确认信息。每天可直接写下修改想法，AI 会生成可行方案并更新当天时间线；未预订内容继续标记为“建议”或“待补”。
         </div>
         <div class="section-head">
-          <div><h2 id="itineraryHeading">每日行程</h2><p>每天用一句话调整，并附折叠式建议</p></div>
+          <div><h2 id="itineraryHeading">每日行程</h2><p>每天用一句话调整，AI 直接更新当天日程</p></div>
           <div class="section-actions"><button class="ghost-btn" id="resetBtn" type="button">恢复初始</button><button class="ghost-btn accent" id="addDayBtn" type="button">＋ 新增一天</button></div>
         </div>
         <div class="filters" aria-label="筛选行程状态">
@@ -1179,6 +1183,9 @@ function init() {
   const allowed = ["itinerary", "travel", "stays", "tickets"];
   setTab(allowed.includes(hash) ? hash : "itinerary", false);
 
+  if ("serviceWorker" in navigator && location.protocol !== "file:") {
+    navigator.serviceWorker.register("./sw.js").catch(() => {});
+  }
 }
 
 window.addEventListener("beforeinstallprompt", (event) => {
@@ -1191,7 +1198,7 @@ document.addEventListener("DOMContentLoaded", init);
   </script>
   <script>
 const EDIT_STORAGE_KEY = "italyItineraryV2";
-const EDIT_DATA_VERSION = "2026-09-16-v15";
+const EDIT_DATA_VERSION = "2026-09-16-v42";
 
 const DAILY_RECOMMENDATIONS = {
   "day-01": { title: "出发日建议", intro: "国际航班建议至少提前 3 小时到达浦东机场。", items: ["核对护照、印度转机要求、行李是否直挂以及下一段登机牌。", "随身包放充电线、转换插头、颈枕和薄外套。", "长途飞行前不要安排过满，保留体力。"] },
@@ -1314,6 +1321,41 @@ const DEFAULT_RECEIPTS = [
 
 let receiptItems = JSON.parse(JSON.stringify(DEFAULT_RECEIPTS));
 
+const LOCAL_PLACE_CATALOG = [
+  { title: "斗兽场", aliases: ["罗马斗兽场", "斗兽场"], time: "上午", order: 10, type: "place", maps: [["斗兽场", "Colosseum, Rome, Italy"]], detail: "建议预约门票，并预留约 2 小时。" },
+  { title: "古罗马广场", aliases: ["古罗马广场", "罗马广场"], time: "上午", order: 11, type: "place", maps: [["古罗马广场", "Roman Forum, Rome, Italy"]], detail: "与斗兽场、帕拉蒂尼山适合串联游览。" },
+  { title: "帕拉蒂尼山", aliases: ["帕拉蒂尼山"], time: "上午", order: 12, type: "place", maps: [["帕拉蒂尼山", "Palatine Hill, Rome, Italy"]], detail: "建议与古罗马遗址使用同一预约时段。" },
+  { title: "梵蒂冈博物馆", aliases: ["梵蒂冈博物馆"], time: "上午", order: 20, type: "place", maps: [["梵蒂冈博物馆", "Vatican Museums, Vatican City"]], detail: "建议提前预约，至少预留 3 小时。" },
+  { title: "圣彼得大教堂", aliases: ["圣彼得大教堂", "圣彼得"], time: "下午", order: 21, type: "place", maps: [["圣彼得大教堂", "St. Peter's Basilica, Vatican City"]], detail: "与梵蒂冈博物馆相邻，注意着装和安检时间。" },
+  { title: "圣天使堡", aliases: ["圣天使堡"], time: "下午", order: 22, type: "place", maps: [["圣天使堡", "Castel Sant'Angelo, Rome, Italy"]], detail: "可从梵蒂冈步行前往，适合傍晚看河景。" },
+  { title: "万神殿", aliases: ["万神殿"], time: "下午", order: 30, type: "place", maps: [["万神殿", "Pantheon, Rome, Italy"]], detail: "适合与纳沃纳广场步行串联。" },
+  { title: "纳沃纳广场", aliases: ["纳沃纳广场"], time: "下午", order: 31, type: "place", maps: [["纳沃纳广场", "Piazza Navona, Rome, Italy"]], detail: "适合下午散步和休息。" },
+  { title: "博尔盖塞美术馆", aliases: ["博尔盖塞美术馆", "博尔盖塞"], time: "下午", order: 35, type: "place", maps: [["博尔盖塞美术馆", "Galleria Borghese, Rome, Italy"]], detail: "必须预约，建议按预约时间倒排当天行程。" },
+  { title: "特雷维喷泉", aliases: ["特雷维喷泉", "许愿池"], time: "傍晚", order: 40, type: "place", maps: [["特雷维喷泉", "Trevi Fountain, Rome, Italy"]], detail: "建议傍晚前往，人流较多。" },
+  { title: "西班牙广场", aliases: ["西班牙广场"], time: "傍晚", order: 41, type: "place", maps: [["西班牙广场", "Spanish Steps, Rome, Italy"]], detail: "可从特雷维喷泉步行串联。" },
+  { title: "特拉斯提弗列", aliases: ["特拉斯提弗列", "trastevere"], time: "晚间", order: 50, type: "place", maps: [["特拉斯提弗列", "Trastevere, Rome, Italy"]], detail: "适合晚餐和夜间散步。" },
+  { title: "索伦托老城", aliases: ["索伦托老城", "索伦托小镇"], time: "傍晚", order: 50, type: "place", maps: [["索伦托老城", "Piazza Tasso, Sorrento, Italy"]], detail: "适合傍晚步行、晚餐和看海景。" },
+  { title: "波西塔诺", aliases: ["波西塔诺", "positano"], time: "上午", order: 10, type: "place", maps: [["波西塔诺", "Positano, Italy"]], detail: "建议上午到达，避开午后拥挤。" },
+  { title: "阿马尔菲", aliases: ["阿马尔菲", "amalfi"], time: "下午", order: 20, type: "place", maps: [["阿马尔菲", "Amalfi, Italy"]], detail: "可看大教堂和海边广场，留意返程船班。" },
+  { title: "拉韦洛", aliases: ["拉韦洛", "ravello"], time: "下午", order: 30, type: "place", maps: [["拉韦洛", "Ravello, Italy"]], detail: "从阿马尔菲上山，建议只安排一个核心花园。" },
+  { title: "卡普里", aliases: ["卡普里", "capri"], time: "上午", order: 10, type: "place", maps: [["卡普里", "Capri, Italy"]], detail: "建议早班船上岛，先远后近。" },
+  { title: "阿纳卡普里", aliases: ["阿纳卡普里", "anacapri"], time: "下午", order: 20, type: "place", maps: [["阿纳卡普里", "Anacapri, Italy"]], detail: "适合与索拉罗山串联。" },
+  { title: "索拉罗山", aliases: ["索拉罗山", "monte solaro"], time: "下午", order: 21, type: "place", maps: [["索拉罗山", "Monte Solaro, Capri, Italy"]], detail: "可乘单人吊椅，天气不佳时可能停运。" },
+  { title: "蓝洞", aliases: ["蓝洞", "blue grotto"], time: "上午", order: 15, type: "place", maps: [["蓝洞", "Blue Grotto, Capri, Italy"]], detail: "是否开放取决于海况，不建议为它牺牲整天行程。" },
+  { title: "庞贝", aliases: ["庞贝", "庞贝古城", "pompeii"], time: "上午", order: 10, type: "place", maps: [["庞贝", "Pompeii Archaeological Park, Italy"]], detail: "建议上午进入遗址，至少预留 3 小时。" },
+  { title: "赫库兰尼姆", aliases: ["赫库兰尼姆", "herculaneum"], time: "下午", order: 30, type: "place", maps: [["赫库兰尼姆", "Herculaneum, Italy"]], detail: "遗址规模较小，适合与庞贝分时安排。" },
+  { title: "那不勒斯", aliases: ["那不勒斯", "napoli"], time: "上午", order: 10, type: "place", maps: [["那不勒斯", "Naples, Italy"]], detail: "适合老城、海边和当地餐饮，注意返程时间。" },
+  { title: "米兰大教堂", aliases: ["米兰大教堂", "duomo", "多莫大教堂"], time: "下午", order: 20, type: "place", maps: [["米兰大教堂", "Duomo di Milano, Italy"]], detail: "可预约登顶，建议避开正午高峰。" },
+  { title: "埃马努埃莱二世拱廊", aliases: ["二世拱廊", "埃马努埃莱二世拱廊", "galleria"], time: "下午", order: 21, type: "place", maps: [["二世拱廊", "Galleria Vittorio Emanuele II, Milan, Italy"]], detail: "与米兰大教堂相邻，适合步行串联。" },
+  { title: "布雷拉", aliases: ["布雷拉", "brera"], time: "下午", order: 30, type: "place", maps: [["布雷拉", "Brera District, Milan, Italy"]], detail: "适合街区散步和轻松用餐。" },
+  { title: "斯福尔扎城堡", aliases: ["斯福尔扎城堡", "sforza"], time: "下午", order: 31, type: "place", maps: [["斯福尔扎城堡", "Sforza Castle, Milan, Italy"]], detail: "可与布雷拉或森皮奥内公园串联。" },
+  { title: "最后的晚餐", aliases: ["最后的晚餐", "last supper"], time: "上午", order: 10, type: "place", maps: [["最后的晚餐", "Santa Maria delle Grazie, Milan, Italy"]], detail: "必须提前预约，并严格按票面时间到达。" },
+  { title: "Navigli", aliases: ["navigli", "运河区"], time: "晚间", order: 40, type: "place", maps: [["Navigli", "Navigli, Milan, Italy"]], detail: "适合晚间餐饮和散步。" },
+  { title: "科莫湖", aliases: ["科莫湖", "como"], time: "全天", order: 5, type: "place", maps: [["科莫湖", "Lake Como, Italy"]], detail: "从米兰乘火车前往，建议提前锁定回程。" },
+  { title: "贝拉焦", aliases: ["贝拉焦", "bellagio"], time: "下午", order: 20, type: "place", maps: [["贝拉焦", "Bellagio, Lake Como, Italy"]], detail: "适合乘渡轮到访，注意末班船时间。" },
+  { title: "瓦伦纳", aliases: ["瓦伦纳", "varenna"], time: "上午", order: 10, type: "place", maps: [["瓦伦纳", "Varenna, Lake Como, Italy"]], detail: "从米兰乘火车可达，适合作为科莫湖第一站。" }
+];
+
 const REGION_GROUPS = [
   { id: "milan-arrival", title: "抵达米兰", kicker: "REGION 1", dayIds: ["day-01", "day-02"], note: "上海 → 德里 → 米兰" },
   { id: "sorrento", title: "索伦托 · 阿马尔菲 · 卡普里", kicker: "REGION 2", dayIds: ["day-03", "day-04", "day-05"], note: "以索伦托为住宿基地" },
@@ -1333,7 +1375,7 @@ function renderEditableDay(day, dayIndex) {
   }).join("");
   const rec = day.recommendation || { title: "待补充", intro: "", items: [] };
   const recommendationHtml = `<details class="utility-disclosure recommendation-panel"><summary><span>当日建议 · ${escapeHtml(rec.title)}</span><small>展开</small></summary><div class="recommendation-body">${rec.intro ? `<p>${escapeHtml(rec.intro)}</p>` : ""}${rec.items?.length ? `<ul>${rec.items.map((item) => `<li>${escapeHtml(item)}</li>`).join("")}</ul>` : "<p>暂无建议，可在本日输入框里说明你的偏好。</p>"}</div></details>`;
-  const smartPanelHtml = `<details class="utility-disclosure smart-adjust"><summary><span>一句话调整这一天</span><small>交给 Codex</small></summary><div class="smart-inner"><p>直接写你的想法，例如“太赶了，上午只去斗兽场，下午加万神殿，晚上去掉西班牙广场”。</p><textarea class="smart-input" data-day="${dayIndex}" placeholder="输入这一天的修改要求，不需要按格式填写"></textarea><div class="smart-actions"><span class="smart-caption">生成后复制回当前 Codex 对话发送即可。</span><button class="ghost-btn accent smart-submit" type="button" data-day="${dayIndex}">生成修改指令</button></div></div></details>`;
+  const smartPanelHtml = `<details class="utility-disclosure smart-adjust"><summary><span>一句话调整这一天</span><small>直接补充日程</small></summary><div class="smart-inner"><p>直接写自然语言，例如“上午从舟山坐大巴到上海浦东机场，下午去外滩”。</p><textarea class="smart-input" data-day="${dayIndex}" placeholder="输入这一天的修改要求，不需要按格式填写"></textarea><div class="smart-actions"><span class="smart-caption">支持任意地点、交通和景点，AI 会直接重排并补充当天日程。</span><button class="ghost-btn accent local-plan" type="button" data-day="${dayIndex}">AI 规划并更新当天</button></div></div></details>`;
   return `<details class="day-card" ${dayIndex === 0 ? "open" : ""}><summary class="day-summary"><div class="date-block"><div class="num">${Number(day.date.slice(5, 7))}/${dateNum}</div><div class="week">${escapeHtml(day.weekday)}</div></div><div class="day-copy"><h3>${escapeHtml(day.city)}</h3><p>${escapeHtml(day.summary)} · 住宿：${escapeHtml(day.stay)}</p></div><span class="day-count">${visibleEvents.length} 项</span><div class="chevron" aria-hidden="true">⌄</div></summary><div class="day-body"><div class="day-utility-bar">${smartPanelHtml}${recommendationHtml}</div><div class="timeline">${eventHtml || '<div class="empty-box">当前筛选下没有行程</div>'}</div></div></details>`;
 }
 
@@ -1497,6 +1539,326 @@ async function copySmartPrompt(text) {
     return ok;
   }
 }
+function localTimeSlot(text, index) {
+  const before = text.slice(Math.max(0, index - 14), index);
+  const matches = before.match(/(早上|上午|中午|下午|傍晚|晚上|晚间|全天)/g);
+  return matches?.length ? matches[matches.length - 1] : "";
+}
+function matchingLocalPlace(day, place) {
+  return day.events.find((event) => [place.title, ...place.aliases].some((name) => event.title.includes(name)));
+}
+function localEventRank(event) {
+  const text = String(event.time || "");
+  const clock = text.match(/^(\d{1,2}):(\d{2})/);
+  if (clock) return Number(clock[1]) * 60 + Number(clock[2]);
+  if (text.includes("全天")) return 8 * 60;
+  if (text.includes("早上")) return 8 * 60 + 30;
+  if (text.includes("上午")) return 9 * 60 + 30;
+  if (text.includes("中午")) return 12 * 60;
+  if (text.includes("下午")) return 14 * 60;
+  if (text.includes("傍晚")) return 17 * 60 + 30;
+  if (text.includes("晚上") || text.includes("晚间")) return 19 * 60 + 30;
+  if (text.includes("入住")) return 21 * 60;
+  return 12 * 60 + 30;
+}
+typeIcons.bus = "▰";
+function cleanTransportEndpoint(value) {
+  return String(value || "")
+    .replace(/^(?:我要|需要|计划|打算|准备)/, "")
+    .replace(/^(?:达)/, "")
+    .replace(/(?:乘坐|搭乘|坐|乘|搭)(?:大巴车|大巴|巴士|长途车|客车|高铁|火车|动车|飞机|航班|渡轮|轮渡|船)?$/g, "")
+    .replace(/[，,。；;！!？?]+$/g, "")
+    .trim();
+}
+function addPlannedTransportEvent(day, payload, changed) {
+  const existing = day.events.find((event) => event.title === payload.title);
+  if (existing) {
+    Object.assign(existing, payload);
+    changed.push(`已更新 ${payload.title}`);
+    return existing;
+  }
+  const event = { id: uidEditable("event"), privateLabel: "", privateValue: "", ...payload };
+  day.events.push(event);
+  changed.push(`已补充 ${payload.title}`);
+  return event;
+}
+function applyMultiLegPlan(day, text) {
+  if (!/(再去|然后|随后|接着|之后)/.test(text)) return [];
+  const clauses = text.split(/(?:，|,|；|;|然后再|再去|然后|随后|接着|之后)/).map((item) => item.trim()).filter(Boolean);
+  if (clauses.length < 2) return [];
+  const changes = [];
+  let previousDestination = "";
+  let dayTime = "上午";
+  let created = 0;
+  clauses.forEach((clause, index) => {
+    const timeMatch = clause.match(/(早上|上午|中午|下午|傍晚|晚上|晚间)/);
+    if (timeMatch) dayTime = timeMatch[1];
+    const routeMatch = clause.match(/从(.+?)(?:出发)?(?:乘坐|搭乘|乘|坐|搭)(大巴车|大巴|巴士|长途车|客车|高铁|火车|动车|地铁|出租车|飞机|航班|渡轮|轮渡|船)(?:前往|到达|到|去)(.+)/);
+    if (routeMatch) {
+      const origin = cleanTransportEndpoint(routeMatch[1]);
+      const destination = cleanTransportEndpoint(routeMatch[3]);
+      const mode = routeMatch[2].match(/大巴|巴士|长途车|客车/) ? { type: "bus", label: "大巴" } : routeMatch[2].match(/高铁|火车|动车/) ? { type: "train", label: "火车" } : routeMatch[2].match(/飞机|航班/) ? { type: "flight", label: "飞机" } : routeMatch[2].match(/船|渡轮|轮渡/) ? { type: "boat", label: "渡轮" } : { type: "train", label: "公共交通" };
+      addPlannedTransportEvent(day, { time: dayTime, type: mode.type, status: "suggested", title: `${origin} → ${destination}`, detail: `${dayTime}从${origin}乘${mode.label}前往${destination}，建议确认实际班次并预留转乘缓冲。`, maps: [{ label: origin, query: origin }, { label: destination, query: destination }] }, changes);
+      previousDestination = destination;
+      created += 1;
+      return;
+    }
+    const mealMatch = clause.match(/(?:再去|去|到|在)?(.+?)(?:吃个中饭|吃午饭|吃午餐|午餐|吃饭|用餐)/);
+    if (mealMatch) {
+      const place = cleanGenericPlaceName(mealMatch[1]).replace(/^(?:再去|然后|随后)/, "");
+      if (place) {
+        addPlannedTransportEvent(day, { time: timeMatch ? dayTime : "中午", type: "place", status: "suggested", title: `${place} · 午餐`, detail: `建议在${place}安排午餐，并根据后续机场交通时间控制停留时长。`, maps: [{ label: place, query: place }] }, changes);
+        previousDestination = place;
+        created += 1;
+        return;
+      }
+    }
+    const moveMatch = clause.match(/(?:出发)?(?:前往|去|到达|到)(.+)/);
+    if (moveMatch) {
+      const destination = cleanTransportEndpoint(moveMatch[1]);
+      const origin = previousDestination || "当前地点";
+      const airport = /机场/.test(destination);
+      const modeLabel = airport ? "地铁/出租车" : "公共交通";
+      addPlannedTransportEvent(day, { time: timeMatch ? dayTime : "下午", type: "train", status: "suggested", title: `${origin} → ${destination}`, detail: `建议从${origin}乘${modeLabel}前往${destination}${airport ? "，并预留 60-90 分钟应对路况和值机安检" : "，具体路线和班次建议出发前确认"}。`, maps: [{ label: origin, query: origin }, { label: destination, query: destination }] }, changes);
+      previousDestination = destination;
+      created += 1;
+    }
+  });
+  return created >= 2 ? changes : [];
+}
+
+function applyTransportPlan(day, text) {
+  const modeRules = [
+    { test: /(大巴车|大巴|巴士|长途车|客车)/, type: "bus", label: "大巴" },
+    { test: /(高铁|火车|动车|铁路)/, type: "train", label: "火车" },
+    { test: /(飞机|航班|飞到|坐飞机)/, type: "flight", label: "飞机" },
+    { test: /(渡轮|轮渡|坐船|乘船)/, type: "boat", label: "渡轮" }
+  ];
+  const mode = modeRules.find((rule) => rule.test.test(text));
+  let origin = "";
+  let destination = "";
+  let match = text.match(/从(.+?)(?:乘坐|搭乘|坐|乘|搭)(?:大巴车|大巴|巴士|长途车|客车|高铁|火车|动车|飞机|航班|渡轮|轮渡|船)(?:到达|到|前往|去)(.+)/);
+  if (!match) {
+    const originMatch = text.match(/从(.+?)(?:乘坐|搭乘|坐|乘|搭)/);
+    const destinationMatch = text.match(/(?:到达|前往|去|到)(.+)/);
+    if (originMatch && destinationMatch) match = [text, originMatch[1], destinationMatch[1]];
+  }
+  if (!match) match = text.match(/从(.+?)(?:出发)?(?:到达|前往|去|到)(.+)/);
+  if (match) {
+    origin = cleanTransportEndpoint(match[1]);
+    destination = cleanTransportEndpoint(match[2]);
+  }
+  if (!origin || !destination || !mode) return [];
+  const timeMatch = text.match(/(早上|上午|中午|下午|傍晚|晚上|晚间|全天)/);
+  const time = timeMatch ? timeMatch[1] : "上午";
+  const existing = day.events.find((event) => event.title.includes(origin) && event.title.includes(destination));
+  const title = `${origin} → ${destination}`;
+  const detail = `${time}从${origin}乘${mode.label}前往${destination}。建议补充实际发车时间和预计车程，并预留转乘、堵车、值机和安检缓冲。`;
+  const maps = [{ label: origin, query: origin }, { label: destination, query: destination }];
+  if (existing) {
+    existing.time = time;
+    existing.title = title;
+    existing.detail = detail;
+    existing.type = mode.type;
+    existing.maps = maps;
+    existing.status = "suggested";
+    return [`已更新交通方案：${origin} → ${destination}`];
+  }
+  day.events.push({ id: uidEditable("event"), time, type: mode.type, status: "suggested", title, detail, privateLabel: "", privateValue: "", maps });
+  return [`已补充交通：${origin} → ${destination}（${mode.label}）`];
+}
+
+function cleanGenericPlaceName(value) {
+  return String(value || "")
+    .replace(/(?:去看看|看看|逛逛|游览|参观|逛一逛|玩一下|一下|吧|呀|嘛|往返|来回)+$/g, "")
+    .replace(/^[的地得]+/, "")
+    .trim();
+}
+function applyGenericPlacePlan(day, text, changed) {
+  const deleteMatch = text.match(/(?:删掉|删除|去掉|取消|不去|移除|不要)([^，,。；;！!？?]{2,24})/);
+  const addMatch = text.match(/(?:去|到|参观|游览|想去|前往)([^，,。；;！!？?]{2,24})/);
+  const match = deleteMatch || addMatch;
+  if (!match) return false;
+  const rawName = cleanGenericPlaceName(match[1]);
+  if (!rawName || rawName.length < 2) return false;
+  const isDelete = Boolean(deleteMatch);
+  const time = localTimeSlot(text, match.index) || "上午";
+  const existing = day.events.find((event) => event.title.includes(rawName));
+  if (isDelete) {
+    if (!existing) return false;
+    day.events.splice(day.events.indexOf(existing), 1);
+    changed.push(`已移除 ${rawName}`);
+    return true;
+  }
+  if (existing) {
+    existing.time = time;
+    existing.status = "suggested";
+    changed.push(`已将 ${rawName} 调整到${time}`);
+    return true;
+  }
+  day.events.push({
+    id: uidEditable("event"),
+    time,
+    type: "place",
+    status: "suggested",
+    title: rawName,
+    detail: "已根据你的输入补充。出发前建议确认开放时间、门票和交通方式。",
+    privateLabel: "",
+    privateValue: "",
+    maps: [{ label: rawName, query: rawName }]
+  });
+  changed.push(`已补充 ${rawName}（${time}）`);
+  return true;
+}
+
+function applyLocalDayPlan(dayIndex, request) {
+  const day = days[dayIndex];
+  const text = String(request || "").toLowerCase().replace(/\s+/g, "");
+  if (!text) return { ok: false, reason: "请输入调整要求" };
+  const multiLegChanges = applyMultiLegPlan(day, text);
+  const transportChanges = multiLegChanges.length ? multiLegChanges : applyTransportPlan(day, text);
+  if (transportChanges.length) {
+    day.events.sort((a, b) => localEventRank(a) - localEventRank(b));
+    day.recommendation = { title: "交通方案已更新", intro: request, items: transportChanges };
+    return { ok: true, changes: transportChanges };
+  }
+  const mentions = [];
+  LOCAL_PLACE_CATALOG.forEach((place) => {
+    let bestIndex = -1;
+    let matchedAlias = "";
+    place.aliases.forEach((alias) => {
+      const index = text.indexOf(alias.toLowerCase());
+      if (index >= 0 && (bestIndex < 0 || index < bestIndex)) { bestIndex = index; matchedAlias = alias; }
+    });
+    if (bestIndex >= 0) mentions.push({ place, index: bestIndex, alias: matchedAlias });
+  });
+  mentions.sort((a, b) => a.index - b.index);
+  const uniqueMentions = mentions.filter((mention, index, list) => list.findIndex((item) => item.place.title === mention.place.title) === index);
+  const mentionedTitles = new Set(uniqueMentions.map((mention) => mention.place.title));
+  const relaxed = /(太赶|不要赶|不赶|轻松|少一点|减少|精简)/.test(text);
+  const keepOnlyMentioned = /(只去|只安排|只看|只保留|保留这些)/.test(text);
+  let changed = [];
+  let currentSlot = "上午";
+  uniqueMentions.forEach((mention, mentionIndex) => {
+    const place = mention.place;
+    const before = text.slice(Math.max(0, mention.index - 12), mention.index);
+    const explicitSlot = localTimeSlot(text, mention.index);
+    if (explicitSlot) currentSlot = explicitSlot;
+    const isDelete = /(删掉|删除|去掉|取消|不去|移除|不要)/.test(before);
+    const isChange = /(换成|改成|替换为|改为)/.test(before);
+    const nextMention = uniqueMentions[mentionIndex + 1];
+    const nextBefore = nextMention ? text.slice(Math.max(0, nextMention.index - 12), nextMention.index) : "";
+    const isReplacedSource = Boolean(nextMention && /(换成|改成|替换为|改为)/.test(nextBefore));
+    if (isReplacedSource && !isDelete) return;
+    if (isDelete || isChange) {
+      const oldPlace = mentionIndex > 0 ? uniqueMentions[mentionIndex - 1].place : null;
+      const targets = oldPlace && isChange ? [oldPlace] : [place];
+      targets.forEach((target) => {
+        const existing = matchingLocalPlace(day, target);
+        if (existing) {
+          day.events.splice(day.events.indexOf(existing), 1);
+          changed.push(`已移除 ${target.title}`);
+        }
+      });
+      if (isDelete) return;
+    }
+    const time = explicitSlot || currentSlot || place.time || "下午";
+    const existing = matchingLocalPlace(day, place);
+    if (existing) {
+      existing.time = time;
+      existing.status = "suggested";
+      changed.push(`已将 ${place.title} 调整到${time}`);
+      return;
+    }
+    day.events.push({
+      id: uidEditable("event"),
+      time,
+      type: place.type || "place",
+      status: "suggested",
+      title: place.title,
+      detail: place.detail,
+      privateLabel: "",
+      privateValue: "",
+      maps: place.maps.map(([label, query]) => ({ label, query }))
+    });
+    changed.push(`已补充 ${place.title}（${time}）`);
+  });
+  if (relaxed || keepOnlyMentioned) {
+    const removable = day.events.filter((event) => event.status === "suggested" && event.type === "place" && (keepOnlyMentioned ? !mentionedTitles.has(event.title) : !mentionedTitles.has(event.title)));
+    removable.slice(0, relaxed && !keepOnlyMentioned ? 1 : removable.length).forEach((event) => {
+      day.events.splice(day.events.indexOf(event), 1);
+      changed.push(`已减少 ${event.title}`);
+    });
+  }
+  if (!changed.length) applyGenericPlacePlan(day, text, changed);
+  if (!changed.length) return { ok: false, reason: "没有识别到地点，请用“上午去某地”这样的说法再试一次" };
+  day.events.sort((a, b) => localEventRank(a) - localEventRank(b));
+  day.recommendation = {
+    title: "本地助手已更新",
+    intro: request,
+    items: changed
+  };
+  return { ok: true, changes: changed };
+}
+
+async function requestAiDayPlan(dayIndex, request) {
+  const day = days[dayIndex];
+  const controller = new AbortController();
+  const timeout = setTimeout(() => controller.abort(), 30000);
+  try {
+    const response = await fetch("/.netlify/functions/plan-day-ai", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        request,
+        day: {
+          date: day.date,
+          city: day.city,
+          stay: day.stay,
+          summary: day.summary,
+          events: day.events.map((event) => ({
+            time: event.time,
+            type: event.type,
+            status: event.status,
+            title: event.title,
+            detail: event.detail,
+            maps: event.maps || []
+          }))
+        }
+      }),
+      signal: controller.signal
+    });
+    if (!response.ok) return { ok: false, reason: `AI 服务不可用（${response.status}）` };
+    const plan = await response.json();
+    if (!plan || !Array.isArray(plan.events) || !plan.events.length) return { ok: false, reason: "AI 未返回有效行程" };
+    const previous = day.events;
+    day.events = plan.events.map((event) => {
+      const old = previous.find((item) => item.title === event.title && item.status === "confirmed");
+      return {
+        id: old?.id || uidEditable("event"),
+        time: String(event.time || ""),
+        type: event.type || "place",
+        status: event.status || "suggested",
+        title: String(event.title || ""),
+        detail: String(event.detail || ""),
+        privateLabel: old?.privateLabel || "",
+        privateValue: old?.privateValue || "",
+        maps: Array.isArray(event.maps) ? event.maps : []
+      };
+    });
+    day.recommendation = {
+      title: "AI 已更新方案",
+      intro: request,
+      items: [plan.summary || `已根据要求重新安排 ${day.events.length} 项行程。`]
+    };
+    return { ok: true, changes: [plan.summary || "AI 已完成规划"] };
+  } catch (error) {
+    return { ok: false, reason: error?.name === "AbortError" ? "AI 规划超时" : "AI 服务未配置或网络不可用" };
+  } finally {
+    clearTimeout(timeout);
+  }
+}
+
 function openSmartPrompt(dayIndex, request) {
   const day = days[dayIndex];
   const text = buildDayCodexPrompt(day, request);
@@ -1509,7 +1871,7 @@ function openSmartPrompt(dayIndex, request) {
 function bindEditableControls() {
   document.querySelector("#addDayBtn")?.addEventListener("click", () => {
     const last = days[days.length - 1]; const nextDate = last ? new Date(new Date(`${last.date}T12:00:00`).getTime() + 86400000).toISOString().slice(0, 10) : "2026-10-01";
-    days.push({ id: uidEditable("day"), date: nextDate, day: `DAY ${days.length + 1}`, weekday: editableWeekday(nextDate), city: "新行程", stay: "待定", summary: "在当天输入框里写下安排，交给 Codex 规划。", recommendation: { title: "待补充", intro: "", items: [] }, events: [] });
+    days.push({ id: uidEditable("day"), date: nextDate, day: `DAY ${days.length + 1}`, weekday: editableWeekday(nextDate), city: "新行程", stay: "待定", summary: "在当天输入框里写下安排，AI 会直接生成方案。", recommendation: { title: "待补充", intro: "", items: [] }, events: [] });
     editableRefresh(); toast("已新增一天，请在当天输入框里写下安排");
   });
   document.querySelector("#resetBtn")?.addEventListener("click", () => {
@@ -1519,9 +1881,25 @@ function bindEditableControls() {
   document.querySelector("#addStayBtn")?.addEventListener("click", () => openStayEditor(null));
   document.querySelector("#addTicketBtn")?.addEventListener("click", () => openTicketEditor(null));
 
-  document.querySelector("#dayList")?.addEventListener("click", (event) => {
-    const button = event.target.closest("button.edit-event,button.delete-event,button.smart-submit"); if (!button) return;
+  document.querySelector("#dayList")?.addEventListener("click", async (event) => {
+    const button = event.target.closest("button.edit-event,button.delete-event,button.local-plan"); if (!button) return;
     const dayIndex = Number(button.dataset.day);
+    if (button.classList.contains("local-plan")) {
+      const input = button.closest(".smart-adjust")?.querySelector(".smart-input");
+      const request = input?.value.trim();
+      if (!request) return toast("先写下你希望怎么调整这一天");
+      const originalText = button.textContent;
+      button.disabled = true;
+      button.textContent = "AI 规划中…";
+      let result = await requestAiDayPlan(dayIndex, request);
+      if (!result.ok) result = applyLocalDayPlan(dayIndex, request);
+      button.disabled = false;
+      button.textContent = originalText;
+      if (!result.ok) return toast(result.reason || "暂时无法规划这条要求");
+      editableRefresh();
+      toast(`已生成方案并补充 ${result.changes.length} 项调整`);
+      return;
+    }
     if (button.classList.contains("smart-submit")) {
       const input = button.closest(".smart-adjust")?.querySelector(".smart-input");
       const request = input?.value.trim();
