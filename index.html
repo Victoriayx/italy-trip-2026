@@ -1,0 +1,1409 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#0a0f16">
+  <meta name="description" content="2026 意大利 11 日行程，包含航班、酒店、城际交通和票据汇总。">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="意大利行程">
+  <title>意大利 11 日行程</title>
+  <style>
+:root {
+  color-scheme: dark;
+  --bg: #0a0f16;
+  --bg-soft: #101721;
+  --panel: #151e29;
+  --panel-2: #1b2633;
+  --panel-3: #22303f;
+  --line: rgba(255,255,255,.09);
+  --line-strong: rgba(255,255,255,.16);
+  --text: #f5f7fb;
+  --muted: #9aa8b8;
+  --muted-2: #728195;
+  --gold: #e9b861;
+  --gold-soft: rgba(233,184,97,.14);
+  --blue: #77a6ff;
+  --blue-soft: rgba(119,166,255,.14);
+  --green: #5fd0a0;
+  --green-soft: rgba(95,208,160,.14);
+  --red: #ff8080;
+  --red-soft: rgba(255,128,128,.13);
+  --violet: #b494ff;
+  --violet-soft: rgba(180,148,255,.14);
+  --cyan: #66c8da;
+  --cyan-soft: rgba(102,200,218,.14);
+  --shadow: 0 18px 50px rgba(0,0,0,.28);
+  --radius-xl: 28px;
+  --radius-lg: 20px;
+  --radius-md: 15px;
+  --radius-sm: 11px;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
+}
+
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  margin: 0;
+  min-height: 100vh;
+  background:
+    radial-gradient(circle at 86% 4%, rgba(233,184,97,.16), transparent 25rem),
+    radial-gradient(circle at 5% 34%, rgba(74,128,255,.11), transparent 27rem),
+    var(--bg);
+  color: var(--text);
+  -webkit-font-smoothing: antialiased;
+}
+a { color: inherit; text-decoration: none; }
+button, input { font: inherit; }
+button { color: inherit; }
+button:focus-visible, a:focus-visible { outline: 2px solid var(--gold); outline-offset: 3px; }
+
+.app-shell { width: min(1120px, 100%); margin: 0 auto; padding: 0 18px 92px; }
+.topbar {
+  position: sticky;
+  top: 0;
+  z-index: 30;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 14px 0 10px;
+  background: linear-gradient(to bottom, rgba(10,15,22,.98), rgba(10,15,22,.84), transparent);
+  backdrop-filter: blur(14px);
+}
+.brand { display: flex; align-items: center; gap: 11px; font-weight: 750; letter-spacing: -.02em; }
+.brand-mark {
+  width: 38px; height: 38px; display: grid; place-items: center;
+  border: 1px solid rgba(233,184,97,.42);
+  border-radius: 12px;
+  color: var(--gold);
+  background: linear-gradient(145deg, rgba(233,184,97,.17), rgba(233,184,97,.04));
+  font-size: 12px; letter-spacing: .08em;
+}
+.brand small { display: block; color: var(--muted); font-size: 10px; font-weight: 600; letter-spacing: .12em; margin-top: 2px; }
+.topbar-actions { display: flex; align-items: center; gap: 8px; }
+.icon-btn, .ghost-btn {
+  border: 1px solid var(--line);
+  background: rgba(21,30,41,.78);
+  border-radius: 999px;
+  padding: 9px 12px;
+  cursor: pointer;
+  transition: .18s ease;
+}
+.icon-btn:hover, .ghost-btn:hover { border-color: var(--line-strong); transform: translateY(-1px); }
+.icon-btn.active { border-color: rgba(233,184,97,.48); color: var(--gold); background: var(--gold-soft); }
+
+.hero {
+  position: relative;
+  overflow: hidden;
+  margin-top: 16px;
+  padding: 30px;
+  min-height: 286px;
+  border: 1px solid rgba(255,255,255,.1);
+  border-radius: var(--radius-xl);
+  background:
+    linear-gradient(145deg, rgba(255,255,255,.06), transparent 48%),
+    radial-gradient(circle at 82% 18%, rgba(233,184,97,.28), transparent 18rem),
+    linear-gradient(135deg, #182434 0%, #101923 62%, #0e141d 100%);
+  box-shadow: var(--shadow);
+}
+.hero::after {
+  content: "";
+  position: absolute;
+  width: 250px; height: 250px;
+  right: -76px; bottom: -104px;
+  border: 1px solid rgba(233,184,97,.22);
+  border-radius: 50%;
+  box-shadow: 0 0 0 26px rgba(233,184,97,.045), 0 0 0 58px rgba(233,184,97,.025);
+}
+.eyebrow { color: var(--gold); font-size: 12px; font-weight: 760; letter-spacing: .18em; text-transform: uppercase; }
+.hero h1 { margin: 11px 0 10px; max-width: 720px; font-size: clamp(38px, 8vw, 72px); line-height: .98; letter-spacing: -.055em; }
+.hero-route { position: relative; z-index: 1; max-width: 680px; color: #d8e0e9; line-height: 1.7; }
+.hero-meta { position: relative; z-index: 1; display: flex; flex-wrap: wrap; gap: 8px; margin-top: 20px; }
+.meta-chip {
+  padding: 8px 11px;
+  border: 1px solid rgba(255,255,255,.12);
+  border-radius: 999px;
+  color: #dce4ed;
+  background: rgba(0,0,0,.14);
+  font-size: 12px;
+}
+
+.quick-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; margin: 14px 0 20px; }
+.quick-card {
+  display: block;
+  padding: 15px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-md);
+  background: linear-gradient(145deg, rgba(255,255,255,.045), rgba(255,255,255,.018));
+  transition: .18s ease;
+}
+.quick-card:hover { border-color: var(--line-strong); transform: translateY(-2px); }
+.quick-card small { display: block; color: var(--muted); margin-bottom: 7px; font-size: 11px; }
+.quick-card strong { font-size: 17px; letter-spacing: -.02em; }
+.quick-card span { display: block; margin-top: 5px; color: var(--muted-2); font-size: 11px; }
+
+.tabs {
+  position: sticky;
+  top: 63px;
+  z-index: 25;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 6px;
+  padding: 6px;
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  background: rgba(15,22,31,.88);
+  backdrop-filter: blur(16px);
+}
+.tab {
+  border: 0; border-radius: 11px; padding: 11px 6px; color: var(--muted); background: transparent; cursor: pointer; font-weight: 680;
+}
+.tab.active { color: #111820; background: var(--gold); }
+.tab-panel { display: none; margin-top: 20px; animation: fadeUp .2s ease; }
+.tab-panel.active { display: block; }
+@keyframes fadeUp { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: none; } }
+
+.section-head { display: flex; align-items: end; justify-content: space-between; gap: 16px; margin: 24px 0 12px; }
+.section-head h2 { margin: 0; font-size: 22px; letter-spacing: -.035em; }
+.section-head p { margin: 0; color: var(--muted); font-size: 12px; }
+.filters { display: flex; gap: 7px; overflow-x: auto; padding: 2px 0 8px; scrollbar-width: none; }
+.filters::-webkit-scrollbar { display: none; }
+.filter {
+  white-space: nowrap; padding: 8px 11px; border-radius: 999px; border: 1px solid var(--line); background: var(--panel); color: var(--muted); cursor: pointer;
+}
+.filter.active { color: var(--gold); border-color: rgba(233,184,97,.44); background: var(--gold-soft); }
+
+.day-list { display: grid; gap: 13px; }
+.day-card {
+  overflow: hidden;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+  background: linear-gradient(145deg, rgba(255,255,255,.035), transparent 45%), var(--panel);
+  box-shadow: 0 10px 30px rgba(0,0,0,.12);
+}
+.day-summary {
+  display: grid;
+  grid-template-columns: 70px minmax(0, 1fr) auto;
+  gap: 14px;
+  align-items: center;
+  padding: 18px;
+  cursor: pointer;
+  list-style: none;
+}
+.day-summary::-webkit-details-marker { display: none; }
+.date-block { text-align: center; }
+.date-block .day { color: var(--gold); font-size: 12px; font-weight: 800; letter-spacing: .12em; }
+.date-block .num { font-size: 28px; line-height: 1.05; font-weight: 800; letter-spacing: -.06em; }
+.date-block .week { color: var(--muted-2); font-size: 10px; margin-top: 4px; }
+.day-copy { min-width: 0; }
+.day-copy h3 { margin: 0 0 4px; font-size: 17px; letter-spacing: -.025em; }
+.day-copy p { margin: 0; color: var(--muted); font-size: 12px; line-height: 1.5; }
+.chevron { color: var(--muted-2); transition: transform .18s ease; }
+details[open] .chevron { transform: rotate(180deg); }
+.day-body { border-top: 1px solid var(--line); padding: 6px 18px 18px; }
+
+.event {
+  position: relative;
+  display: grid;
+  grid-template-columns: 54px 28px minmax(0, 1fr);
+  gap: 8px;
+  padding: 11px 0;
+}
+.event:not(:last-child)::after {
+  content: "";
+  position: absolute;
+  left: 67px; top: 37px; bottom: -11px;
+  width: 1px;
+  background: var(--line);
+}
+.event-time { color: var(--muted); font-size: 11px; padding-top: 5px; }
+.event-dot { z-index: 1; width: 26px; height: 26px; display: grid; place-items: center; border-radius: 9px; font-size: 12px; background: var(--panel-3); border: 1px solid var(--line); }
+.event.flight .event-dot { color: var(--blue); background: var(--blue-soft); }
+.event.train .event-dot { color: var(--violet); background: var(--violet-soft); }
+.event.boat .event-dot { color: var(--cyan); background: var(--cyan-soft); }
+.event.hotel .event-dot { color: var(--green); background: var(--green-soft); }
+.event.place .event-dot { color: var(--gold); background: var(--gold-soft); }
+.event.note .event-dot { color: var(--muted); }
+.event-content { min-width: 0; padding-top: 1px; }
+.event-title-row { display: flex; flex-wrap: wrap; align-items: center; gap: 7px; }
+.event-title { font-size: 14px; font-weight: 720; line-height: 1.35; }
+.event-detail { margin-top: 6px; color: var(--muted); font-size: 12px; line-height: 1.55; }
+.event-actions { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 9px; }
+.mini-link {
+  display: inline-flex; align-items: center; gap: 5px; padding: 6px 9px; border: 1px solid var(--line); border-radius: 9px; color: #cfd8e3; font-size: 11px; background: rgba(255,255,255,.025);
+}
+.mini-link:hover { border-color: var(--line-strong); }
+.status { display: inline-flex; align-items: center; padding: 4px 7px; border-radius: 999px; font-size: 10px; font-weight: 760; }
+.status.confirmed { color: var(--green); background: var(--green-soft); }
+.status.suggested { color: var(--gold); background: var(--gold-soft); }
+.status.todo { color: var(--red); background: var(--red-soft); }
+.status.booked { color: var(--blue); background: var(--blue-soft); }
+.private { transition: .15s ease; }
+.privacy-on .private { filter: blur(6px); user-select: none; }
+
+.panel { border: 1px solid var(--line); border-radius: var(--radius-lg); background: var(--panel); padding: 18px; }
+.panel + .panel { margin-top: 12px; }
+.panel h3 { margin: 0 0 7px; font-size: 16px; letter-spacing: -.02em; }
+.panel p { margin: 0; color: var(--muted); font-size: 12px; line-height: 1.6; }
+.panel-grid { display: grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap: 12px; }
+.stay-card { position: relative; }
+.stay-card .stay-index { color: var(--gold); font-size: 10px; letter-spacing: .14em; font-weight: 800; }
+.stay-card h3 { margin: 8px 0 6px; font-size: 17px; }
+.stay-address { min-height: 40px; }
+.stay-meta { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 8px; margin-top: 14px; }
+.stay-meta div { padding: 10px; border-radius: 10px; background: rgba(255,255,255,.028); }
+.stay-meta small { display: block; color: var(--muted-2); margin-bottom: 3px; font-size: 10px; }
+.stay-meta strong { font-size: 12px; font-weight: 680; }
+.stay-actions { display: flex; gap: 8px; margin-top: 14px; }
+
+.summary-row { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 11px 0; border-bottom: 1px solid var(--line); }
+.summary-row:last-child { border-bottom: 0; }
+.summary-row span:first-child { color: var(--muted); font-size: 12px; }
+.summary-row strong { text-align: right; }
+.summary-row.total { padding-top: 16px; }
+.summary-row.total strong { color: var(--gold); font-size: 20px; }
+
+.ticket-list { display: grid; gap: 10px; }
+.ticket-item { display: grid; grid-template-columns: 36px minmax(0,1fr) auto; gap: 12px; align-items: center; }
+.ticket-icon { width: 36px; height: 36px; display: grid; place-items: center; border-radius: 11px; background: var(--panel-2); }
+.ticket-item h3 { margin: 0 0 3px; font-size: 14px; }
+.ticket-item p { margin: 0; font-size: 11px; }
+.note-strip {
+  margin-bottom: 16px;
+  padding: 13px 15px;
+  border: 1px solid rgba(233,184,97,.25);
+  border-radius: 14px;
+  color: #dfc999;
+  background: rgba(233,184,97,.08);
+  font-size: 12px;
+  line-height: 1.55;
+}
+.bottom-nav {
+  position: fixed;
+  z-index: 40;
+  left: 50%; bottom: 12px; transform: translateX(-50%);
+  width: min(560px, calc(100% - 24px));
+  display: grid; grid-template-columns: repeat(4,1fr); gap: 4px;
+  padding: 6px;
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  background: rgba(15,22,31,.9);
+  box-shadow: 0 18px 45px rgba(0,0,0,.45);
+  backdrop-filter: blur(18px);
+}
+.bottom-nav a { padding: 10px 4px; text-align: center; color: var(--muted); font-size: 11px; border-radius: 12px; }
+.bottom-nav a:hover { color: var(--text); background: rgba(255,255,255,.045); }
+
+@media (max-width: 760px) {
+  .app-shell { padding-inline: 12px; padding-bottom: 96px; }
+  .hero { padding: 24px 20px; min-height: 260px; border-radius: 24px; }
+  .hero h1 { font-size: 46px; }
+  .quick-grid { grid-template-columns: repeat(2, minmax(0,1fr)); }
+  .tabs { top: 61px; }
+  .tab { font-size: 12px; }
+  .day-summary { grid-template-columns: 58px minmax(0,1fr) auto; padding: 15px 13px; }
+  .day-body { padding-inline: 13px; }
+  .event { grid-template-columns: 45px 26px minmax(0,1fr); gap: 7px; }
+  .event:not(:last-child)::after { left: 58px; }
+  .panel-grid { grid-template-columns: 1fr; }
+  .bottom-nav { display: grid; }
+}
+@media (min-width: 761px) { .bottom-nav { display: none; } }
+@media print {
+  :root { color-scheme: light; }
+  body { background: #fff; color: #111; }
+  .topbar, .tabs, .bottom-nav, .filters, .quick-grid { display: none !important; }
+  .hero, .day-card, .panel { box-shadow: none; break-inside: avoid; border-color: #ddd; background: #fff; color: #111; }
+  .hero h1, .day-copy h3, .event-title { color: #111; }
+  .day-copy p, .event-detail, .panel p { color: #555; }
+  .tab-panel { display: block !important; }
+}
+
+.quick-card { text-align: left; cursor: pointer; font: inherit; }
+.bottom-nav a.active { color: var(--gold); background: var(--gold-soft); }
+.toast {
+  position: fixed; z-index: 80; left: 50%; bottom: 86px; transform: translate(-50%, 16px);
+  max-width: calc(100% - 32px); padding: 11px 14px;
+  border: 1px solid var(--line-strong); border-radius: 12px;
+  background: rgba(20,29,40,.96); color: var(--text); box-shadow: var(--shadow);
+  opacity: 0; pointer-events: none; transition: .22s ease; font-size: 12px;
+}
+.toast.show { opacity: 1; transform: translate(-50%, 0); }
+@media (min-width: 761px) { .toast { bottom: 24px; } }
+
+.section-actions { display: flex; flex-wrap: wrap; gap: 8px; justify-content: flex-end; }
+.ghost-btn.accent { color: #161c23; background: var(--gold); border-color: var(--gold); font-weight: 750; }
+.day-tools { display: flex; flex-wrap: wrap; gap: 8px; padding: 13px 0 2px; }
+.mini-link.danger-link { color: var(--red); border-color: rgba(255,128,128,.22); }
+.station-link { color: #cfe0ff; }
+.recommendation-panel { margin: 10px 0 4px; border: 1px solid rgba(233,184,97,.22); border-radius: 14px; background: rgba(233,184,97,.055); }
+.recommendation-panel > summary { display: flex; justify-content: space-between; align-items: center; gap: 12px; cursor: pointer; list-style: none; padding: 13px 14px; color: #f0d296; font-size: 13px; font-weight: 720; }
+.recommendation-panel > summary::-webkit-details-marker { display: none; }
+.recommendation-panel > summary small { color: var(--muted-2); font-size: 10px; font-weight: 500; }
+.recommendation-panel > summary::before { content: "◇"; margin-right: 2px; color: var(--gold); }
+.recommendation-body { padding: 0 14px 14px; color: #cbd3dc; }
+.recommendation-body p { margin: 0 0 8px; color: var(--muted); font-size: 12px; line-height: 1.6; }
+.recommendation-body ul { margin: 0; padding-left: 18px; }
+.recommendation-body li { margin: 6px 0; font-size: 12px; line-height: 1.55; }
+dialog.editor-dialog { width: min(620px, calc(100% - 24px)); max-height: calc(100vh - 24px); padding: 0; border: 1px solid var(--line-strong); border-radius: 20px; color: var(--text); background: #111923; box-shadow: var(--shadow); }
+dialog.editor-dialog::backdrop { background: rgba(0,0,0,.65); backdrop-filter: blur(4px); }
+.dialog-head { display: flex; justify-content: space-between; align-items: center; padding: 16px 18px; border-bottom: 1px solid var(--line); }
+.dialog-head h3 { margin: 0; font-size: 18px; }
+.dialog-close { border: 0; background: transparent; color: var(--muted); cursor: pointer; font-size: 20px; }
+.editor-form { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 13px; padding: 18px; overflow: auto; }
+.editor-form label { display: grid; gap: 6px; color: var(--muted); font-size: 11px; }
+.editor-form .full { grid-column: 1 / -1; }
+.editor-form input, .editor-form select, .editor-form textarea { width: 100%; border: 1px solid var(--line); border-radius: 10px; padding: 10px 11px; color: var(--text); background: #0d141d; }
+.editor-form input:focus, .editor-form select:focus, .editor-form textarea:focus { outline: 2px solid rgba(233,184,97,.35); border-color: rgba(233,184,97,.45); }
+.editor-form textarea { min-height: 82px; resize: vertical; line-height: 1.5; }
+.editor-form textarea.maps-input { min-height: 104px; font-family: ui-monospace, SFMono-Regular, Consolas, monospace; font-size: 11px; }
+.form-actions { grid-column: 1 / -1; display: flex; justify-content: flex-end; gap: 8px; padding-top: 4px; }
+.form-actions .delete-action { margin-right: auto; color: var(--red); }
+@media (max-width: 620px) { .editor-form { grid-template-columns: 1fr; } .editor-form .full, .form-actions { grid-column: 1; } .section-head { align-items: flex-start; flex-direction: column; } .section-actions { justify-content: flex-start; } }
+
+.smart-adjust { margin: 12px 0 4px; padding: 14px; border: 1px solid rgba(119,166,255,.24); border-radius: 14px; background: rgba(119,166,255,.07); }
+.smart-adjust h4 { margin: 0 0 5px; font-size: 13px; color: #cfe0ff; }
+.smart-adjust p { margin: 0 0 10px; color: var(--muted); font-size: 11px; line-height: 1.55; }
+.smart-input { width: 100%; min-height: 68px; resize: vertical; border: 1px solid var(--line); border-radius: 11px; padding: 10px 11px; color: var(--text); background: #0d141d; line-height: 1.5; }
+.smart-input:focus { outline: 2px solid rgba(119,166,255,.3); border-color: rgba(119,166,255,.5); }
+.smart-actions { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-top: 10px; }
+.smart-caption { color: var(--muted-2); font-size: 10px; line-height: 1.4; }
+.smart-submit { flex: 0 0 auto; }
+.prompt-box { width: 100%; min-height: 220px; resize: vertical; border: 1px solid var(--line); border-radius: 11px; padding: 11px; color: #dce5ef; background: #0b1119; font-family: ui-monospace, SFMono-Regular, Consolas, monospace; font-size: 11px; line-height: 1.55; }
+.prompt-note { margin: 0 0 11px; color: var(--muted); font-size: 12px; line-height: 1.6; }
+@media (max-width: 620px) { .smart-actions { align-items: stretch; flex-direction: column; } .smart-submit { width: 100%; } }
+
+.region-card { overflow: hidden; border: 1px solid var(--line); border-radius: 22px; background: linear-gradient(145deg, rgba(255,255,255,.035), transparent 42%), var(--panel); box-shadow: 0 12px 34px rgba(0,0,0,.14); }
+.region-head { display: flex; justify-content: space-between; align-items: flex-start; gap: 18px; padding: 18px 18px 15px; border-bottom: 1px solid var(--line); background: rgba(255,255,255,.018); }
+.region-kicker { color: var(--gold); font-size: 10px; font-weight: 800; letter-spacing: .16em; }
+.region-head h3 { margin: 6px 0 4px; font-size: clamp(20px, 4vw, 28px); letter-spacing: -.045em; }
+.region-head p { margin: 0; color: var(--muted); font-size: 12px; line-height: 1.5; }
+.region-stay { flex: 0 0 min(260px, 42%); padding: 10px 12px; border: 1px solid var(--line); border-radius: 12px; background: rgba(0,0,0,.13); }
+.region-stay small { display: block; color: var(--muted-2); font-size: 10px; margin-bottom: 3px; }
+.region-stay strong { display: block; font-size: 12px; line-height: 1.4; }
+.region-day-list { display: grid; gap: 10px; padding: 12px; }
+.region-day-list .day-card { border-radius: 16px; box-shadow: none; }
+.day-summary { grid-template-columns: 70px minmax(0, 1fr) auto auto; }
+.day-count { color: var(--muted-2); font-size: 10px; white-space: nowrap; }
+.item-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; padding-top: 10px; }
+.event-card { min-width: 0; padding: 12px; border: 1px solid var(--line); border-radius: 13px; background: linear-gradient(145deg, rgba(255,255,255,.035), rgba(255,255,255,.012)); }
+.event-card.flight { border-color: rgba(119,166,255,.22); }
+.event-card.train { border-color: rgba(180,148,255,.22); }
+.event-card.boat { border-color: rgba(102,200,218,.22); }
+.event-card.hotel { border-color: rgba(95,208,160,.22); }
+.event-card.place { border-color: rgba(233,184,97,.22); }
+.event-card-top { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 7px; }
+.event-time-pill { display: inline-flex; align-items: center; gap: 5px; color: #dce6f3; font-size: 11px; font-weight: 720; }
+.event-card .event-title { margin-top: 9px; font-size: 13px; line-height: 1.45; }
+.event-card .event-detail { margin-top: 6px; }
+.event-card .event-actions { margin-top: 10px; }
+.empty-box { grid-column: 1 / -1; padding: 16px; border: 1px dashed var(--line-strong); border-radius: 12px; color: var(--muted); text-align: center; font-size: 12px; }
+.smart-adjust { padding: 0; overflow: hidden; }
+.smart-adjust > summary { display: flex; justify-content: space-between; gap: 10px; padding: 12px 13px; cursor: pointer; list-style: none; color: #cfe0ff; font-size: 12px; font-weight: 720; }
+.smart-adjust > summary::-webkit-details-marker { display: none; }
+.smart-adjust > summary small { color: var(--muted-2); font-size: 10px; font-weight: 500; }
+.smart-inner { padding: 0 13px 13px; }
+@media (max-width: 760px) {
+  .region-head { flex-direction: column; padding: 15px; }
+  .region-stay { flex: none; width: 100%; }
+  .item-grid { grid-template-columns: 1fr; }
+  .day-summary { grid-template-columns: 58px minmax(0,1fr) auto; }
+  .day-count { display: none; }
+  .event-card { padding: 11px; }
+}
+
+.day-utility-bar { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; margin: 10px 0 2px; }
+.utility-disclosure { min-width: 0; margin: 0; padding: 0; overflow: hidden; border: 1px solid var(--line); border-radius: 12px; background: rgba(255,255,255,.025); }
+.utility-disclosure[open] { grid-column: 1 / -1; }
+.utility-disclosure + .utility-disclosure[open] { grid-column: 1 / -1; }
+.utility-disclosure > summary { display: flex; align-items: center; justify-content: space-between; gap: 8px; padding: 10px 12px; list-style: none; cursor: pointer; color: #dce6f3; font-size: 12px; font-weight: 700; }
+.utility-disclosure > summary::-webkit-details-marker { display: none; }
+.utility-disclosure > summary small { color: var(--muted-2); font-size: 10px; font-weight: 500; white-space: nowrap; }
+.utility-disclosure.recommendation-panel { background: rgba(233,184,97,.045); border-color: rgba(233,184,97,.18); }
+.utility-disclosure.recommendation-panel > summary { color: #efd394; }
+.utility-disclosure.smart-adjust { background: rgba(119,166,255,.055); border-color: rgba(119,166,255,.2); }
+.utility-disclosure.smart-adjust > summary { color: #cfe0ff; }
+.utility-disclosure .smart-inner { padding: 0 12px 12px; }
+.utility-disclosure .recommendation-body { padding: 0 12px 12px; }
+.timeline { margin-top: 12px; }
+.timeline-item { position: relative; display: grid; grid-template-columns: 54px 26px minmax(0, 1fr); gap: 8px; padding: 9px 0; }
+.timeline-item:not(:last-child)::after { content: ""; position: absolute; left: 67px; top: 35px; bottom: -9px; width: 1px; background: var(--line); }
+.timeline-time { color: var(--muted); font-size: 11px; padding-top: 5px; }
+.timeline-rail { position: relative; z-index: 1; }
+.timeline-dot { width: 26px; height: 26px; display: grid; place-items: center; border-radius: 9px; background: var(--panel-3); border: 1px solid var(--line); font-size: 12px; }
+.timeline-item.flight .timeline-dot { color: var(--blue); background: var(--blue-soft); }
+.timeline-item.train .timeline-dot { color: var(--violet); background: var(--violet-soft); }
+.timeline-item.boat .timeline-dot { color: var(--cyan); background: var(--cyan-soft); }
+.timeline-item.hotel .timeline-dot { color: var(--green); background: var(--green-soft); }
+.timeline-item.place .timeline-dot { color: var(--gold); background: var(--gold-soft); }
+.timeline-content { min-width: 0; padding-top: 1px; }
+.timeline-content .event-title { margin: 0; font-size: 14px; }
+.timeline-content .event-detail { margin-top: 5px; }
+.timeline-content .event-actions { margin-top: 7px; }
+.region-day-list { gap: 8px; padding: 10px; }
+.day-summary { padding-block: 14px; }
+.day-body { padding-bottom: 14px; }
+@media (max-width: 760px) {
+  .day-utility-bar { grid-template-columns: 1fr; }
+  .utility-disclosure[open] { grid-column: 1; }
+  .timeline-item { grid-template-columns: 45px 24px minmax(0,1fr); gap: 7px; }
+  .timeline-item:not(:last-child)::after { left: 56px; }
+  .timeline-dot { width: 24px; height: 24px; }
+}
+
+.receipt-timeline { border: 1px solid var(--line); border-radius: 18px; background: linear-gradient(145deg, rgba(255,255,255,.03), transparent 45%), var(--panel); padding: 10px 14px; }
+.receipt-timeline-item.attraction .timeline-dot, .receipt-timeline-item.place .timeline-dot { color: var(--gold); background: var(--gold-soft); }
+.receipt-timeline-item.restaurant .timeline-dot { color: #f2a66f; background: rgba(242,166,111,.14); }
+.receipt-timeline-item.insurance .timeline-dot, .receipt-timeline-item.other .timeline-dot { color: var(--muted); background: rgba(255,255,255,.05); }
+.receipt-amount { display: flex; flex-wrap: wrap; align-items: baseline; gap: 9px; margin-top: 8px; }
+.receipt-amount strong { color: var(--gold); font-size: 20px; letter-spacing: -.03em; }
+.receipt-amount span { color: var(--muted); font-size: 11px; }
+.file-chip { display: inline-flex; max-width: 100%; margin-top: 8px; padding: 6px 9px; border: 1px solid rgba(95,208,160,.22); border-radius: 9px; color: #a9e7cd; background: rgba(95,208,160,.075); font-size: 10px; overflow-wrap: anywhere; }
+.editor-form input[type="file"] { padding: 8px; color: var(--muted); }
+.editor-form input[type="file"]::file-selector-button { margin-right: 9px; border: 1px solid var(--line); border-radius: 8px; padding: 7px 9px; color: var(--text); background: var(--panel-3); cursor: pointer; }
+
+  </style>
+</head>
+<body>
+  <div class="app-shell">
+    <header class="topbar">
+      <div class="brand">
+        <div class="brand-mark">IT</div>
+        <div>ITALY 2026<small>PRIVATE ITINERARY</small></div>
+      </div>
+      <div class="topbar-actions">
+        <button class="icon-btn" id="privacyToggle" type="button" aria-pressed="false">隐私模式</button>
+        <button class="icon-btn" id="printBtn" type="button" title="打印或保存为 PDF">打印</button>
+      </div>
+    </header>
+
+    <main>
+      <section class="hero" aria-labelledby="tripTitle">
+        <div class="eyebrow">2026.10.01 - 10.11 · 2 TRAVELERS</div>
+        <h1 id="tripTitle">意大利 11 日</h1>
+        <div class="hero-route">上海 · 德里 · 米兰 · 索伦托 · 阿马尔菲 · 卡普里 · 罗马</div>
+        <div class="hero-meta">
+          <span class="meta-chip">4 段住宿</span>
+          <span class="meta-chip">2 段国际航班</span>
+          <span class="meta-chip">10 月 2 日抵达米兰</span>
+          <span class="meta-chip">10 月 10 日晚返程</span>
+        </div>
+      </section>
+
+      <section class="quick-grid" aria-label="行程摘要">
+        <a class="quick-card" href="#travel" data-quick="travel">
+          <small>去程航班</small>
+          <strong>10/01 22:00</strong>
+          <span>上海浦东 T2 出发</span>
+        </a>
+        <a class="quick-card" href="#stays" data-quick="stays">
+          <small>首晚住宿</small>
+          <strong>Doria Grand</strong>
+          <span>米兰 · 10/02-10/03</span>
+        </a>
+        <a class="quick-card" href="#tickets" data-quick="tickets">
+          <small>人均已确认</small>
+          <strong id="quickTotal">计算中</strong>
+          <span>机票 + 住宿</span>
+        </a>
+        <button class="quick-card" id="installBtn" type="button">
+          <small>手机使用</small>
+          <strong>添加到主屏</strong>
+          <span>像 App 一样打开</span>
+        </button>
+      </section>
+
+      <nav class="tabs" aria-label="内容切换">
+        <button class="tab active" type="button" data-tab="itinerary">行程</button>
+        <button class="tab" type="button" data-tab="travel">交通</button>
+        <button class="tab" type="button" data-tab="stays">住宿</button>
+        <button class="tab" type="button" data-tab="tickets">票据</button>
+      </nav>
+
+      <section class="tab-panel active" id="panel-itinerary" aria-labelledby="itineraryHeading">
+        <div class="note-strip">
+          已从机票和酒店材料中自动填充确认信息。每天可直接写下修改想法，生成给 Codex 的指令；未预订内容继续标记为“建议”或“待补”。
+        </div>
+        <div class="section-head">
+          <div><h2 id="itineraryHeading">每日行程</h2><p>每天用一句话调整，并附折叠式建议</p></div>
+          <div class="section-actions"><button class="ghost-btn" id="resetBtn" type="button">恢复初始</button><button class="ghost-btn accent" id="addDayBtn" type="button">＋ 新增一天</button></div>
+        </div>
+        <div class="filters" aria-label="筛选行程状态">
+          <button class="filter active" type="button" data-filter="all">全部</button>
+          <button class="filter" type="button" data-filter="confirmed">已确认</button>
+          <button class="filter" type="button" data-filter="suggested">建议</button>
+          <button class="filter" type="button" data-filter="todo">待补</button>
+        </div>
+        <div class="day-list" id="dayList"></div>
+      </section>
+
+      <section class="tab-panel" id="panel-travel" aria-labelledby="travelHeading">
+        <div class="section-head">
+          <div><h2 id="travelHeading">国际航班</h2><p>日期和时间均为当地时间</p></div>
+        </div>
+        <div id="flightList"></div>
+        <div class="section-head">
+          <div><h2>意大利城际交通</h2><p>高铁与区域铁路尚未提供</p></div>
+        </div>
+        <div id="railList"></div>
+      </section>
+
+      <section class="tab-panel" id="panel-stays" aria-labelledby="stayHeading">
+        <div class="section-head">
+          <div><h2 id="stayHeading">住宿安排</h2><p>4 段订单已确认</p></div>
+          <button class="ghost-btn accent" id="addStayBtn" type="button">＋ 新增住宿</button>
+        </div>
+        <div class="panel-grid" id="stayList"></div>
+      </section>
+
+      <section class="tab-panel" id="panel-tickets" aria-labelledby="ticketHeading">
+        <div class="section-head">
+          <div><h2 id="ticketHeading">票据与花费时间线</h2><p>上传文件后自动重算人均和双人合计</p></div>
+          <button class="ghost-btn accent" id="addTicketBtn" type="button">＋ 新增票据</button>
+        </div>
+        <div class="note-strip">
+          票据文件保存在当前设备的浏览器数据库中，不会自动包含在发布网页中。清理浏览器数据前请先确认备份；现有机票和住宿金额默认按 2 人分摊。
+        </div>
+        <div class="ticket-list" id="ticketList"></div>
+        <div class="section-head">
+          <div><h2>花费汇总</h2><p>根据票据实时计算</p></div>
+        </div>
+        <div class="panel" id="expenseList"></div>
+      </section>
+    </main>
+
+    <nav class="bottom-nav" aria-label="底部导航">
+      <a href="#itinerary" data-nav="itinerary">行程</a>
+      <a href="#travel" data-nav="travel">交通</a>
+      <a href="#stays" data-nav="stays">住宿</a>
+      <a href="#tickets" data-nav="tickets">票据</a>
+    </nav>
+  </div>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  <script>
+const trip = {
+  title: "意大利 11 日",
+  dates: "2026.10.01 - 10.11",
+  route: "上海 · 德里 · 米兰 · 索伦托 · 阿马尔菲 · 卡普里 · 罗马",
+  people: 2,
+  airlinePnr: "EV9C3T",
+  ticketNumbers: "098-9555824527 / 098-9555824528"
+};
+
+const statusMeta = {
+  confirmed: { label: "已确认", icon: "✓" },
+  booked: { label: "已预订", icon: "✓" },
+  suggested: { label: "建议", icon: "◇" },
+  todo: { label: "待补", icon: "!" }
+};
+
+const typeIcons = {
+  flight: "✈",
+  train: "⇄",
+  boat: "≈",
+  hotel: "⌂",
+  place: "◎",
+  note: "•"
+};
+
+const days = [
+  {
+    date: "2026-10-01", day: "DAY 1", weekday: "周四", city: "上海 → 德里", stay: "飞机上",
+    summary: "晚间从上海浦东出发，前往德里转机。",
+    events: [
+      { time: "22:00", type: "flight", status: "confirmed", title: "AI351 上海浦东 T2 → 德里 T3", detail: "22:00 起飞，10 月 2 日 02:30 抵达；建议至少提前 3 小时到达浦东机场。", privateLabel: "PNR", privateValue: "EV9C3T" }
+    ]
+  },
+  {
+    date: "2026-10-02", day: "DAY 2", weekday: "周五", city: "德里 → 米兰", stay: "Doria Grand Hotel",
+    summary: "德里转机后抵达米兰，乘机场快线进入市区并入住。",
+    events: [
+      { time: "02:30", type: "flight", status: "confirmed", title: "抵达德里 T3", detail: "中转停留约 11 小时 30 分。" },
+      { time: "14:00", type: "flight", status: "confirmed", title: "AI137 德里 T3 → 米兰马尔彭萨 T1", detail: "14:00 起飞，19:30 抵达米兰。" },
+      { time: "晚间", type: "hotel", status: "confirmed", title: "入住 Doria Grand Hotel", detail: "2026-10-02 入住，10 月 3 日 11:00 前退房。", privateLabel: "确认号", privateValue: "207-16595814", mapQuery: "Doria Grand Hotel, Viale Andrea Doria 22, Milan, Italy" }
+    ]
+  },
+  {
+    date: "2026-10-03", day: "DAY 3", weekday: "周六", city: "米兰 → 索伦托", stay: "SolMar B&B",
+    summary: "上午退房，乘高铁经那不勒斯前往索伦托。",
+    events: [
+      { time: "11:00", type: "hotel", status: "confirmed", title: "Doria Grand Hotel 退房", detail: "退房时间以酒店前台为准；到店城市税约 ¥155.71。" },
+      { time: "上午", type: "train", status: "todo", title: "米兰中央车站 → 那不勒斯中央车站", detail: "建议选择 Frecciarossa 高铁，车票尚未在已给材料中体现。", privateLabel: "补充", privateValue: "待购票 / 待核时刻" },
+      { time: "下午", type: "train", status: "todo", title: "那不勒斯 → 索伦托", detail: "建议衔接 Circumvesuviana 或 Campania Express；需以当天班次为准。" },
+      { time: "14:00后", type: "hotel", status: "confirmed", title: "入住 SolMar B&B", detail: "Via Santa Lucia, 12, Sorrento；10 月 6 日 10:00 前退房。", privateLabel: "确认号", privateValue: "HM3SB4AQZA", mapQuery: "Via Santa Lucia 12, Sorrento, Italy" }
+    ]
+  },
+  {
+    date: "2026-10-04", day: "DAY 4", weekday: "周日", city: "阿马尔菲海岸", stay: "SolMar B&B",
+    summary: "以索伦托为基地，游波西塔诺和阿马尔菲。",
+    events: [
+      { time: "全天", type: "boat", status: "suggested", title: "索伦托 → 波西塔诺 → 阿马尔菲", detail: "建议优先查看渡轮班次；若停航，可改为 SITA 巴士。船票和巴士时刻请出发前确认。", mapQuery: "Positano, Italy" },
+      { time: "晚间", type: "place", status: "suggested", title: "返回索伦托老城", detail: "适合步行、晚餐和看海景。", mapQuery: "Sorrento Old Town, Italy" }
+    ]
+  },
+  {
+    date: "2026-10-05", day: "DAY 5", weekday: "周一", city: "卡普里", stay: "SolMar B&B",
+    summary: "从索伦托乘船前往卡普里一日游。",
+    events: [
+      { time: "上午", type: "boat", status: "suggested", title: "索伦托码头 → 卡普里", detail: "建议提前确认往返船班和天气状况。", mapQuery: "Capri Ferry Terminal, Italy" },
+      { time: "全天", type: "place", status: "suggested", title: "卡普里岛自由活动", detail: "可安排卡普里镇、奥古斯都花园、蓝洞或环岛体验；具体项目和门票待确认。", mapQuery: "Capri, Italy" }
+    ]
+  },
+  {
+    date: "2026-10-06", day: "DAY 6", weekday: "周二", city: "索伦托 → 罗马", stay: "La Presentosa",
+    summary: "上午退房前往罗马，下午入住圣乔瓦尼区域。",
+    events: [
+      { time: "10:00", type: "hotel", status: "confirmed", title: "SolMar B&B 退房", detail: "退房后前往索伦托车站。" },
+      { time: "上午", type: "train", status: "todo", title: "索伦托 → 那不勒斯 → 罗马", detail: "建议预留约 4 小时；城际高铁车票尚未在已给材料中体现。", privateLabel: "补充", privateValue: "待购票 / 待核时刻" },
+      { time: "14:00后", type: "hotel", status: "confirmed", title: "入住 La Presentosa - San Giovanni", detail: "Via Pompeii, 21, Rome；10 月 8 日 10:00 前退房。", privateLabel: "确认号", privateValue: "HMK54AWDBK", mapQuery: "Via Pompeii 21, Rome, Italy" },
+      { time: "傍晚", type: "place", status: "suggested", title: "圣乔瓦尼周边散步", detail: "根据体力安排；拉特朗圣若望大殿可作为近距离选项。", mapQuery: "Basilica di San Giovanni in Laterano, Rome" }
+    ]
+  },
+  {
+    date: "2026-10-07", day: "DAY 7", weekday: "周三", city: "罗马", stay: "La Presentosa",
+    summary: "罗马核心景点全天，门票与预约时间待确认。",
+    events: [
+      { time: "上午", type: "place", status: "todo", title: "斗兽场 · 古罗马广场 · 帕拉蒂尼山", detail: "三个区域通常建议预约同一时段联票；请提供实际门票时间后再锁定。", mapQuery: "Colosseum, Rome, Italy" },
+      { time: "下午", type: "place", status: "suggested", title: "万神殿 · 纳沃纳广场", detail: "适合按体力串联步行，具体停留时间可调整。", mapQuery: "Pantheon, Rome, Italy" },
+      { time: "傍晚", type: "place", status: "suggested", title: "特雷维喷泉 · 西班牙广场", detail: "建议作为傍晚路线；高峰时段人流较多。", mapQuery: "Trevi Fountain, Rome, Italy" },
+      { time: "晚间", type: "note", status: "todo", title: "餐厅预约待补充", detail: "告诉我菜系、预算和用餐时间，我可以继续筛选并整理预约。" }
+    ]
+  },
+  {
+    date: "2026-10-08", day: "DAY 8", weekday: "周四", city: "罗马 → 米兰", stay: "Milan Art Nouveau Apartment",
+    summary: "上午退房，乘高铁返回米兰，傍晚入住。",
+    events: [
+      { time: "10:00", type: "hotel", status: "confirmed", title: "La Presentosa 退房", detail: "前往 Roma Termini。" },
+      { time: "上午", type: "train", status: "todo", title: "罗马 Termini → 米兰中央车站", detail: "建议乘坐 Frecciarossa，车程约 3 小时；车票尚未在已给材料中体现。", privateLabel: "补充", privateValue: "待购票 / 待核时刻" },
+      { time: "15:00后", type: "hotel", status: "confirmed", title: "入住米兰新艺术公寓", detail: "Via Giovanni Battista Morgagni, 40；10 月 10 日 11:00 前退房。", privateLabel: "确认号", privateValue: "HMDPJSXC53", mapQuery: "Via Giovanni Battista Morgagni 40, Milan, Italy" },
+      { time: "傍晚", type: "place", status: "suggested", title: "米兰大教堂 · 埃马努埃莱二世拱廊", detail: "视到达时间安排；教堂登顶和博物馆门票待确认。", mapQuery: "Duomo di Milano, Italy" }
+    ]
+  },
+  {
+    date: "2026-10-09", day: "DAY 9", weekday: "周五", city: "米兰 / 科莫", stay: "Milan Art Nouveau Apartment",
+    summary: "科莫湖一日游或米兰市内备选，二选一。",
+    events: [
+      { time: "全天", type: "train", status: "suggested", title: "建议 A：科莫湖一日游", detail: "米兰中央车站往返科莫；可继续乘船前往贝拉焦。班次、船票和回程时间待确认。", mapQuery: "Como San Giovanni Station, Italy" },
+      { time: "备选", type: "place", status: "suggested", title: "建议 B：米兰市区购物与漫步", detail: "可用布雷拉、斯福尔扎城堡、Navigli 运河替代科莫湖。", mapQuery: "Brera District, Milan, Italy" },
+      { time: "晚间", type: "note", status: "todo", title: "整理行李并确认次日机场交通", detail: "航班起飞前请再次核对航站楼、值机时间和行李额度。" }
+    ]
+  },
+  {
+    date: "2026-10-10", day: "DAY 10", weekday: "周六", city: "米兰 → 德里", stay: "飞机上",
+    summary: "白天机动，晚间从马尔彭萨机场返程。",
+    events: [
+      { time: "11:00", type: "hotel", status: "confirmed", title: "米兰公寓退房", detail: "建议将行李安排和机场交通在出发前确认。" },
+      { time: "白天", type: "place", status: "suggested", title: "米兰机动时间", detail: "可根据购物、补拍或休息需求自由安排。" },
+      { time: "建议 18:15前", type: "flight", status: "confirmed", title: "抵达米兰马尔彭萨 T1", detail: "国际航班建议预留充足时间办理值机和托运。" },
+      { time: "21:15", type: "flight", status: "confirmed", title: "AI138 米兰马尔彭萨 T1 → 德里 T3", detail: "21:15 起飞，10 月 11 日 09:45 抵达。" }
+    ]
+  },
+  {
+    date: "2026-10-11", day: "DAY 11", weekday: "周日", city: "德里 → 上海", stay: "到家",
+    summary: "德里转机后返回上海。",
+    events: [
+      { time: "09:45", type: "flight", status: "confirmed", title: "抵达德里 T3", detail: "中转后前往下一程登机口。" },
+      { time: "11:20", type: "flight", status: "confirmed", title: "AI352 德里 T3 → 上海浦东 T2", detail: "11:20 起飞，20:20 抵达上海。" }
+    ]
+  }
+];
+
+const stays = [
+  {
+    index: "STAY 1", city: "米兰", name: "Doria Grand Hotel", status: "confirmed",
+    address: "Viale Andrea Doria, 22, Milan",
+    checkIn: "10-02 15:00后", checkOut: "10-03 11:00前",
+    confirmation: "207-16595814", phone: "+39 02 67411411",
+    price: "¥1,475.63",
+    note: "在线已付 ¥1,319.92，另计到店税费约 ¥155.71；10 月 3 日含 2 份早餐。"
+  },
+  {
+    index: "STAY 2", city: "索伦托", name: "SolMar B&B", status: "confirmed",
+    address: "Via Santa Lucia, 12, Sorrento",
+    checkIn: "10-03 14:00", checkOut: "10-06 10:00",
+    confirmation: "HM3SB4AQZA", phone: "+39 347 700 5812",
+    price: "¥4,668.44",
+    note: "2 位住客，订单已支付；由 Marisa 接待。"
+  },
+  {
+    index: "STAY 3", city: "罗马", name: "La Presentosa - San Giovanni", status: "confirmed",
+    address: "Via Pompeii, 21, Rome",
+    checkIn: "10-06 14:00", checkOut: "10-08 10:00",
+    confirmation: "HMK54AWDBK", phone: "+39 349 603 6849",
+    price: "¥2,866.47",
+    note: "2 位住客，订单已支付；由 Sabrina 接待。"
+  },
+  {
+    index: "STAY 4", city: "米兰", name: "Milan Art Nouveau Apartment", status: "confirmed",
+    address: "Via Giovanni Battista Morgagni, 40",
+    checkIn: "10-08 15:00", checkOut: "10-10 11:00",
+    confirmation: "HMDPJSXC53", phone: "+39 333 963 5992",
+    price: "¥3,995.92",
+    note: "2 位住客，订单已支付；由 Francesco 接待。"
+  }
+];
+
+const intercity = [
+  { date: "10-03", route: "米兰 → 索伦托", mode: "高铁 + 区域铁路", status: "todo", note: "经那不勒斯中转，建议总预留约 7 小时。" },
+  { date: "10-06", route: "索伦托 → 罗马", mode: "区域铁路 + 高铁", status: "todo", note: "经那不勒斯中转，建议总预留约 4 小时。" },
+  { date: "10-08", route: "罗马 → 米兰", mode: "高铁", status: "todo", note: "Roma Termini → Milano Centrale，建议约 3 小时。" }
+];
+
+const tickets = [
+  { icon: "✈", title: "往返机票预订单", status: "confirmed", note: "2 人已核对；原始 PDF 未打包进网页。" },
+  { icon: "⌂", title: "酒店住宿凭证", status: "confirmed", note: "4 段住宿已提取，确认号可开启隐私模式隐藏。" },
+  { icon: "⇄", title: "意大利城际火车票", status: "todo", note: "米兰、索伦托、罗马、米兰三段尚未提供。" },
+  { icon: "◎", title: "景点 / 博物馆门票", status: "todo", note: "斗兽场、卡普里或米兰大教堂等信息待补充。" },
+  { icon: "◇", title: "餐厅预约", status: "todo", note: "填写菜系、预算和时段后可继续筛选。" },
+  { icon: "＋", title: "申根保险 / 其他票据", status: "todo", note: "可后续加入保险、接送机或当地体验订单。" }
+];
+
+const expenses = [
+  { name: "往返机票 · 2 人", amount: 9736.00 },
+  { name: "米兰 Doria · 1 晚", amount: 1475.63 },
+  { name: "索伦托 SolMar · 3 晚", amount: 4668.44 },
+  { name: "罗马 La Presentosa · 2 晚", amount: 2866.47 },
+  { name: "米兰公寓 · 2 晚", amount: 3995.92 }
+];
+
+const currency = new Intl.NumberFormat("zh-CN", { style: "currency", currency: "CNY", minimumFractionDigits: 2 });
+const totalExpense = expenses.reduce((sum, item) => sum + item.amount, 0);
+
+let filter = "all";
+let deferredPrompt = null;
+
+function escapeHtml(value) {
+  return String(value).replace(/[&<>"']/g, (char) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[char]));
+}
+
+function mapsUrl(query) {
+  return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(query)}`;
+}
+
+function privateMarkup(label, value) {
+  if (!label || !value) return "";
+  return ` · ${escapeHtml(label)} <span class="private">${escapeHtml(value)}</span>`;
+}
+
+function renderDays() {
+  const container = document.querySelector("#dayList");
+  if (!container) return;
+  const blocks = days.map((day) => {
+    const visibleEvents = day.events.filter((event) => filter === "all" || event.status === filter);
+    if (!visibleEvents.length) return "";
+    const month = Number(day.date.slice(5, 7));
+    const dateNum = Number(day.date.slice(8, 10));
+    const eventHtml = visibleEvents.map((event) => {
+      const status = statusMeta[event.status] || statusMeta.todo;
+      const map = event.mapQuery ? `<a class="mini-link" href="${mapsUrl(event.mapQuery)}" target="_blank" rel="noreferrer">打开地图</a>` : "";
+      return `
+        <article class="event ${event.type}">
+          <div class="event-time">${escapeHtml(event.time)}</div>
+          <div class="event-dot" aria-hidden="true">${typeIcons[event.type] || "•"}</div>
+          <div class="event-content">
+            <div class="event-title-row">
+              <div class="event-title">${escapeHtml(event.title)}</div>
+              <span class="status ${event.status}">${status.icon} ${status.label}</span>
+            </div>
+            <div class="event-detail">${escapeHtml(event.detail)}${privateMarkup(event.privateLabel, event.privateValue)}</div>
+            ${map ? `<div class="event-actions">${map}</div>` : ""}
+          </div>
+        </article>`;
+    }).join("");
+    return `
+      <details class="day-card" ${dateNum <= 3 ? "open" : ""}>
+        <summary class="day-summary">
+          <div class="date-block">
+            <div class="day">${escapeHtml(day.day)}</div>
+            <div class="num">${month}/${dateNum}</div>
+            <div class="week">${escapeHtml(day.weekday)}</div>
+          </div>
+          <div class="day-copy">
+            <h3>${escapeHtml(day.city)}</h3>
+            <p>${escapeHtml(day.summary)} · 住宿：${escapeHtml(day.stay)}</p>
+          </div>
+          <div class="chevron" aria-hidden="true">⌄</div>
+        </summary>
+        <div class="day-body">${eventHtml}</div>
+      </details>`;
+  }).join("");
+  container.innerHTML = blocks || `<div class="panel"><p>当前筛选下没有行程。</p></div>`;
+}
+
+function renderStays() {
+  const container = document.querySelector("#stayList");
+  if (!container) return;
+  container.innerHTML = stays.map((stay) => {
+    const status = statusMeta[stay.status];
+    return `
+      <article class="panel stay-card">
+        <div class="stay-index">${escapeHtml(stay.index)} · ${escapeHtml(stay.city)}</div>
+        <h3>${escapeHtml(stay.name)} <span class="status ${stay.status}">${status.icon} ${status.label}</span></h3>
+        <p class="stay-address">${escapeHtml(stay.address)}</p>
+        <div class="stay-meta">
+          <div><small>入住</small><strong>${escapeHtml(stay.checkIn)}</strong></div>
+          <div><small>退房</small><strong>${escapeHtml(stay.checkOut)}</strong></div>
+          <div><small>确认号</small><strong class="private">${escapeHtml(stay.confirmation)}</strong></div>
+          <div><small>价格</small><strong>${escapeHtml(stay.price)}</strong></div>
+        </div>
+        <p style="margin-top:12px">${escapeHtml(stay.note)}</p>
+        <div class="stay-actions">
+          <a class="mini-link" href="${mapsUrl(`${stay.name}, ${stay.address}`)}" target="_blank" rel="noreferrer">地图</a>
+          <a class="mini-link" href="tel:${escapeHtml(stay.phone.replace(/\s/g, ""))}">联系住宿</a>
+        </div>
+      </article>`;
+  }).join("");
+}
+
+function renderTravel() {
+  const flightBox = document.querySelector("#flightList");
+  const railBox = document.querySelector("#railList");
+  if (!flightBox || !railBox) return;
+  const flightEvents = days.flatMap((day) => day.events.filter((event) => event.type === "flight" && event.status === "confirmed").map((event) => ({ ...event, date: day.date.slice(5).replace("-", "/") })));
+  flightBox.innerHTML = flightEvents.map((event) => `
+    <div class="panel">
+      <div class="event-title-row"><h3>${escapeHtml(event.date)} · ${escapeHtml(event.title)}</h3><span class="status confirmed">✓ 已确认</span></div>
+      <p>${escapeHtml(event.detail)}${privateMarkup(event.privateLabel, event.privateValue)}</p>
+    </div>`).join("");
+  railBox.innerHTML = intercity.map((leg) => `
+    <div class="panel">
+      <div class="event-title-row"><h3>${escapeHtml(leg.date)} · ${escapeHtml(leg.route)}</h3><span class="status ${leg.status}">! ${statusMeta[leg.status].label}</span></div>
+      <p>${escapeHtml(leg.mode)} · ${escapeHtml(leg.note)}</p>
+    </div>`).join("");
+}
+
+function renderTickets() {
+  const box = document.querySelector("#ticketList");
+  if (!box) return;
+  box.innerHTML = tickets.map((ticket) => {
+    const status = statusMeta[ticket.status];
+    return `
+      <div class="panel ticket-item">
+        <div class="ticket-icon" aria-hidden="true">${ticket.icon}</div>
+        <div><h3>${escapeHtml(ticket.title)}</h3><p>${escapeHtml(ticket.note)}</p></div>
+        <span class="status ${ticket.status}">${status.icon} ${status.label}</span>
+      </div>`;
+  }).join("");
+}
+
+function renderExpenses() {
+  const box = document.querySelector("#expenseList");
+  const quickTotal = document.querySelector("#quickTotal");
+  if (quickTotal) quickTotal.textContent = currency.format(totalExpense);
+  if (!box) return;
+  box.innerHTML = expenses.map((item) => `
+    <div class="summary-row"><span>${escapeHtml(item.name)}</span><strong>${currency.format(item.amount)}</strong></div>
+  `).join("") + `
+    <div class="summary-row total"><span>已确认合计</span><strong>${currency.format(totalExpense)}</strong></div>
+  `;
+}
+
+function setFilter(next) {
+  filter = next;
+  document.querySelectorAll(".filter").forEach((button) => button.classList.toggle("active", button.dataset.filter === filter));
+  renderDays();
+}
+
+function setTab(next, updateHash = true) {
+  document.querySelectorAll(".tab").forEach((button) => button.classList.toggle("active", button.dataset.tab === next));
+  document.querySelectorAll(".tab-panel").forEach((panel) => panel.classList.toggle("active", panel.id === `panel-${next}`));
+  document.querySelectorAll(".bottom-nav a").forEach((link) => link.classList.toggle("active", link.dataset.nav === next));
+  if (updateHash) history.replaceState(null, "", `#${next}`);
+}
+
+function setPrivacy(enabled) {
+  document.body.classList.toggle("privacy-on", enabled);
+  const button = document.querySelector("#privacyToggle");
+  if (button) {
+    button.classList.toggle("active", enabled);
+    button.setAttribute("aria-pressed", String(enabled));
+    button.textContent = enabled ? "隐私模式 开" : "隐私模式";
+  }
+  localStorage.setItem("italyPrivacy", enabled ? "1" : "0");
+}
+
+function toast(message) {
+  const el = document.querySelector("#toast");
+  if (!el) return;
+  el.textContent = message;
+  el.classList.add("show");
+  clearTimeout(window.__toastTimer);
+  window.__toastTimer = setTimeout(() => el.classList.remove("show"), 2600);
+}
+
+function init() {
+  renderDays();
+  renderStays();
+  renderTravel();
+  renderTickets();
+  renderExpenses();
+
+  document.querySelectorAll(".tab").forEach((button) => button.addEventListener("click", () => setTab(button.dataset.tab)));
+  document.querySelectorAll(".bottom-nav a").forEach((link) => link.addEventListener("click", (event) => {
+    event.preventDefault();
+    setTab(link.dataset.nav);
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }));
+  document.querySelectorAll("[data-quick]").forEach((link) => link.addEventListener("click", (event) => {
+    event.preventDefault();
+    setTab(link.dataset.quick);
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }));
+  document.querySelectorAll(".filter").forEach((button) => button.addEventListener("click", () => setFilter(button.dataset.filter)));
+  document.querySelector("#privacyToggle")?.addEventListener("click", () => setPrivacy(!document.body.classList.contains("privacy-on")));
+  document.querySelector("#printBtn")?.addEventListener("click", () => window.print());
+  document.querySelector("#installBtn")?.addEventListener("click", async () => {
+    if (deferredPrompt) {
+      deferredPrompt.prompt();
+      await deferredPrompt.userChoice;
+      deferredPrompt = null;
+    } else {
+      toast("iPhone：点“分享”后选择“添加到主屏幕”");
+    }
+  });
+
+  const savedPrivacy = localStorage.getItem("italyPrivacy") === "1";
+  setPrivacy(savedPrivacy);
+
+  const hash = location.hash.replace("#", "");
+  const allowed = ["itinerary", "travel", "stays", "tickets"];
+  setTab(allowed.includes(hash) ? hash : "itinerary", false);
+
+}
+
+window.addEventListener("beforeinstallprompt", (event) => {
+  event.preventDefault();
+  deferredPrompt = event;
+});
+
+document.addEventListener("DOMContentLoaded", init);
+
+  </script>
+  <script>
+const EDIT_STORAGE_KEY = "italyItineraryV2";
+const EDIT_DATA_VERSION = "2026-09-16-v15";
+
+const DAILY_RECOMMENDATIONS = {
+  "day-01": { title: "出发日建议", intro: "国际航班建议至少提前 3 小时到达浦东机场。", items: ["核对护照、印度转机要求、行李是否直挂以及下一段登机牌。", "随身包放充电线、转换插头、颈枕和薄外套。", "长途飞行前不要安排过满，保留体力。"] },
+  "day-02": { title: "抵达米兰建议", intro: "今晚以顺利入住为主，不建议再安排远距离景点。", items: ["抵达马尔彭萨 T1 后，优先乘 Malpensa Express 到 Milano Centrale。", "再从 Milano Centrale 乘地铁或出租车到 Doria Grand Hotel。", "入住后简单晚餐，并确认次日去中央车站的时间。"] },
+  "day-03": { title: "经典交通路线", intro: "这是移动距离最长的一天，建议第一段高铁安排在 08:00 前后。", items: ["Milano Centrale → Napoli Centrale：直达 Frecciarossa 约 4 小时 10 分。", "Napoli Centrale → Sorrento：Campania Express 或 Circumvesuviana 约 1 小时。", "到达索伦托后先入住，傍晚逛老城和 Villa Comunale。"] },
+  "day-04": { title: "经典海岸一日游", intro: "优先渡轮，若停航改 SITA 巴士；不建议一天再加 Ravello。", items: ["08:00 前后从 Sorrento Marina Piccola 出发。", "先游 Positano，再乘船去 Amalfi。", "Amalfi 看大教堂和海边广场，17:00-18:00 开始返程。"] },
+  "day-05": { title: "卡普里经典路线", intro: "建议早班船上岛，先远后近，避开下午返程高峰。", items: ["卡普里镇 → Anacapri → Monte Solaro 是经典顺序。", "蓝洞是否开放取决于海况，不要为它牺牲整个行程。", "返程至少预留 1 小时缓冲。"] },
+  "day-06": { title: "罗马初到建议", intro: "入住后不要跨城赶景点，以住宿周边和轻松晚餐为主。", items: ["索伦托 → 那不勒斯 → Roma Termini，总移动时间预留 4 小时。", "从 Roma Termini 乘地铁 A 线到 San Giovanni。", "傍晚看拉特朗圣若望大殿，晚餐可去 Monti 一带。"] },
+  "day-07": { title: "罗马经典一日路线", intro: "只有一天完整时间时，不建议同时塞入梵蒂冈和古罗马区。", items: ["上午斗兽场、古罗马广场、帕拉蒂尼山预约同一时段。", "午餐去 Monti，下午串联万神殿和纳沃纳广场。", "傍晚看特雷维喷泉，再走到西班牙广场。"] },
+  "day-08": { title: "米兰经典半日", intro: "建议买 08:00 前后的 Frecciarossa，中午前抵达米兰。", items: ["Roma Termini → Milano Centrale 约 3 小时。", "15:00 入住后去 Duomo 和埃马努埃莱二世拱廊。", "晚上可去 Navigli，但不要安排得太晚。"] },
+  "day-09": { title: "两套经典方案", intro: "想看湖景选 A；不想长途移动或想购物选 B。", items: ["方案 A：Milano Centrale → Varenna，转渡轮到 Bellagio。", "方案 B：Duomo 登顶、Brera、斯福尔扎城堡和 Navigli。", "20:00 前回住宿，开始整理行李。"] },
+  "day-10": { title: "返程日建议", intro: "建议 16:30-17:00 从米兰市区出发去机场。", items: ["上午退房后可寄存行李，安排轻量活动。", "建议 18:15 前抵达马尔彭萨 T1。", "确认退税商品、登机文件和随身液体。"] },
+  "day-11": { title: "返程日建议", intro: "以衔接下一程和补充休息为主。", items: ["抵达德里 T3 后确认下一段登机口。", "上海落地后清点护照、行李和退税物品。", "保留机票和酒店票据。"] }
+};
+
+const STATION_MAPS = {
+  "e-01-1": [["浦东 T2", "Shanghai Pudong International Airport Terminal 2"]],
+  "e-01-2": [["浦东 T2", "Shanghai Pudong International Airport Terminal 2"], ["德里 T3", "Indira Gandhi International Airport Terminal 3"]],
+  "e-02-1": [["德里 T3", "Indira Gandhi International Airport Terminal 3"]],
+  "e-02-2": [["德里 T3", "Indira Gandhi International Airport Terminal 3"], ["马尔彭萨 T1", "Milan Malpensa Airport Terminal 1"]],
+  "e-02-3": [["马尔彭萨 T1", "Milan Malpensa Airport Terminal 1"], ["米兰中央车站", "Milano Centrale Station, Milan, Italy"]],
+  "e-02-4": [["酒店", "Doria Grand Hotel, Viale Andrea Doria 22, Milan, Italy"]],
+  "e-03-1": [["酒店", "Doria Grand Hotel, Viale Andrea Doria 22, Milan, Italy"], ["米兰中央车站", "Milano Centrale Station, Milan, Italy"]],
+  "e-03-2": [["米兰中央车站", "Milano Centrale Station, Milan, Italy"], ["那不勒斯中央车站", "Napoli Centrale Station, Naples, Italy"]],
+  "e-03-3": [["那不勒斯中央车站", "Napoli Centrale Station, Naples, Italy"], ["索伦托车站", "Sorrento Railway Station, Italy"]],
+  "e-03-4": [["住宿", "Via Santa Lucia 12, Sorrento, Italy"]],
+  "e-03-5": [["索伦托老城", "Piazza Tasso, Sorrento, Italy"]],
+  "e-04-1": [["索伦托码头", "Sorrento Marina Piccola, Italy"], ["波西塔诺码头", "Positano Ferry Terminal, Italy"]],
+  "e-04-2": [["波西塔诺", "Positano, Italy"]],
+  "e-04-3": [["阿马尔菲码头", "Amalfi Ferry Terminal, Italy"]],
+  "e-04-4": [["阿马尔菲", "Amalfi Cathedral, Italy"], ["索伦托", "Sorrento, Italy"]],
+  "e-05-1": [["索伦托码头", "Sorrento Marina Piccola, Italy"], ["卡普里码头", "Marina Grande, Capri, Italy"]],
+  "e-05-2": [["卡普里镇", "Capri Town, Italy"]],
+  "e-05-3": [["阿纳卡普里", "Anacapri, Italy"], ["索拉罗山", "Monte Solaro, Capri, Italy"]],
+  "e-05-4": [["卡普里码头", "Marina Grande, Capri, Italy"], ["索伦托码头", "Sorrento Marina Piccola, Italy"]],
+  "e-06-1": [["住宿", "Via Santa Lucia 12, Sorrento, Italy"], ["索伦托车站", "Sorrento Railway Station, Italy"]],
+  "e-06-2": [["索伦托车站", "Sorrento Railway Station, Italy"], ["那不勒斯中央车站", "Napoli Centrale Station, Naples, Italy"], ["罗马 Termini", "Roma Termini Station, Rome, Italy"]],
+  "e-06-3": [["住宿", "Via Pompeii 21, Rome, Italy"], ["San Giovanni 地铁站", "San Giovanni Metro Station, Rome, Italy"]],
+  "e-06-4": [["拉特朗圣若望大殿", "Basilica di San Giovanni in Laterano, Rome"]],
+  "e-07-1": [["斗兽场", "Colosseum, Rome, Italy"], ["古罗马广场", "Roman Forum, Rome, Italy"], ["帕拉蒂尼山", "Palatine Hill, Rome, Italy"]],
+  "e-07-2": [["Monti", "Monti District, Rome, Italy"]],
+  "e-07-3": [["万神殿", "Pantheon, Rome, Italy"], ["纳沃纳广场", "Piazza Navona, Rome, Italy"]],
+  "e-07-4": [["特雷维喷泉", "Trevi Fountain, Rome, Italy"], ["西班牙广场", "Spanish Steps, Rome, Italy"]],
+  "e-08-1": [["住宿", "Via Pompeii 21, Rome, Italy"], ["罗马 Termini", "Roma Termini Station, Rome, Italy"]],
+  "e-08-2": [["罗马 Termini", "Roma Termini Station, Rome, Italy"], ["米兰中央车站", "Milano Centrale Station, Milan, Italy"]],
+  "e-08-3": [["住宿", "Via Giovanni Battista Morgagni 40, Milan, Italy"]],
+  "e-08-4": [["米兰大教堂", "Duomo di Milano, Italy"], ["二世拱廊", "Galleria Vittorio Emanuele II, Milan, Italy"]],
+  "e-09-1": [["米兰中央车站", "Milano Centrale Station, Milan, Italy"], ["Varenna", "Varenna Esino Station, Italy"], ["贝拉焦", "Bellagio, Lake Como, Italy"]],
+  "e-09-2": [["Duomo", "Duomo di Milano, Italy"], ["Brera", "Brera District, Milan, Italy"], ["斯福尔扎城堡", "Sforza Castle, Milan, Italy"], ["Navigli", "Navigli, Milan, Italy"]],
+  "e-10-1": [["住宿", "Via Giovanni Battista Morgagni 40, Milan, Italy"]],
+  "e-10-2": [["米兰中央车站", "Milano Centrale Station, Milan, Italy"], ["马尔彭萨 T1", "Milan Malpensa Airport Terminal 1"]],
+  "e-10-3": [["马尔彭萨 T1", "Milan Malpensa Airport Terminal 1"]],
+  "e-10-4": [["马尔彭萨 T1", "Milan Malpensa Airport Terminal 1"], ["德里 T3", "Indira Gandhi International Airport Terminal 3"]],
+  "e-11-1": [["德里 T3", "Indira Gandhi International Airport Terminal 3"]],
+  "e-11-2": [["德里 T3", "Indira Gandhi International Airport Terminal 3"], ["浦东 T2", "Shanghai Pudong International Airport Terminal 2"]]
+};
+
+Object.assign(STATION_MAPS, {
+  "e-01-1": [["浦东 T2", "Shanghai Pudong International Airport Terminal 2"], ["德里 T3", "Indira Gandhi International Airport Terminal 3"]],
+  "e-02-3": [["酒店", "Doria Grand Hotel, Viale Andrea Doria 22, Milan, Italy"]],
+  "e-03-1": [["酒店", "Doria Grand Hotel, Viale Andrea Doria 22, Milan, Italy"], ["米兰中央车站", "Milano Centrale Station, Milan, Italy"]],
+  "e-04-1": [["索伦托码头", "Sorrento Marina Piccola, Italy"], ["波西塔诺码头", "Positano Ferry Terminal, Italy"], ["阿马尔菲码头", "Amalfi Ferry Terminal, Italy"]],
+  "e-05-2": [["卡普里", "Capri, Italy"]],
+  "e-07-4": [],
+  "e-09-3": []
+});
+
+function applyEditableEnhancements() {
+  days.forEach((day, dayIndex) => {
+    if (!day.id) day.id = `day-${String(dayIndex + 1).padStart(2, "0")}`;
+    const dayNumber = day.id.match(/\d+$/)?.[0] || String(dayIndex + 1).padStart(2, "0");
+    day.events.forEach((event, eventIndex) => { if (!event.id) event.id = `e-${dayNumber}-${eventIndex + 1}`; });
+    if (day.date === "2026-10-02" && day.summary === "德里转机后抵达米兰，入住机场方向酒店。") day.summary = "德里转机后抵达米兰，乘机场快线进入市区并入住。";
+    if (!day.recommendation && DAILY_RECOMMENDATIONS[day.id]) day.recommendation = DAILY_RECOMMENDATIONS[day.id];
+    day.events.forEach((event) => {
+      if (!event.maps && STATION_MAPS[event.id]) event.maps = STATION_MAPS[event.id].map(([label, query]) => ({ label, query }));
+      if (!event.maps && event.mapQuery) event.maps = [{ label: "打开地图", query: event.mapQuery }];
+    });
+  });
+}
+
+function loadEditableData() {
+  try {
+    const saved = JSON.parse(localStorage.getItem(EDIT_STORAGE_KEY) || "null");
+    if (saved?.version === EDIT_DATA_VERSION && saved?.days?.length) days.splice(0, days.length, ...saved.days);
+    if (saved?.version === EDIT_DATA_VERSION && saved?.stays?.length) stays.splice(0, stays.length, ...saved.stays);
+    if (saved?.version === EDIT_DATA_VERSION && saved?.receipts?.length) receiptItems = saved.receipts;
+  } catch (error) { console.warn("Unable to load edits", error); }
+}
+
+function saveEditableData() { localStorage.setItem(EDIT_STORAGE_KEY, JSON.stringify({ version: EDIT_DATA_VERSION, days, stays, receipts: receiptItems })); }
+function editableMapLinks(items) { return (items || []).map((item) => `<a class="mini-link station-link" href="${mapsUrl(item.query)}" target="_blank" rel="noreferrer">📍 ${escapeHtml(item.label)}</a>`).join(""); }
+function editableMapsText(items) { return (items || []).map((item) => `${item.label}|${item.query}`).join("\n"); }
+function parseEditableMaps(text) { return String(text || "").split("\n").map((line) => line.trim()).filter(Boolean).map((line) => { const parts = line.split("|"); const label = (parts[0] || "").trim(); const query = (parts.slice(1).join("|") || parts[0] || "").trim(); return { label: label || query, query }; }).filter((item) => item.query); }
+function editableWeekday(iso) { return new Intl.DateTimeFormat("zh-CN", { weekday: "short" }).format(new Date(`${iso}T12:00:00`)); }
+function uidEditable(prefix) { return `${prefix}-${Date.now()}-${Math.random().toString(16).slice(2)}`; }
+
+const RECEIPT_CATEGORIES = {
+  flight: { label: "机票", icon: "✈" },
+  hotel: { label: "住宿", icon: "⌂" },
+  train: { label: "火车", icon: "⇄" },
+  boat: { label: "渡轮", icon: "≈" },
+  attraction: { label: "景点", icon: "◎" },
+  restaurant: { label: "餐饮", icon: "◇" },
+  insurance: { label: "保险", icon: "＋" },
+  other: { label: "其他", icon: "•" }
+};
+
+const DEFAULT_RECEIPTS = [
+  { id: "receipt-flight", date: "2026-10-01", time: "22:00", title: "往返机票预订单", category: "flight", status: "confirmed", amount: 9736.00, persons: 2, note: "两人往返机票总额，原始预订单已核对。", fileId: "", fileName: "", fileType: "", fileSize: 0 },
+  { id: "receipt-doria", date: "2026-10-02", time: "15:00", title: "Doria Grand Hotel", category: "hotel", status: "confirmed", amount: 1475.63, persons: 2, note: "在线已付加预估到店税费，按双人分摊。", fileId: "", fileName: "", fileType: "", fileSize: 0 },
+  { id: "receipt-solmar", date: "2026-10-03", time: "14:00", title: "SolMar B&B", category: "hotel", status: "confirmed", amount: 4668.44, persons: 2, note: "3 晚订单已支付，按双人分摊。", fileId: "", fileName: "", fileType: "", fileSize: 0 },
+  { id: "receipt-rome", date: "2026-10-06", time: "14:00", title: "La Presentosa - San Giovanni", category: "hotel", status: "confirmed", amount: 2866.47, persons: 2, note: "2 晚订单已支付，按双人分摊。", fileId: "", fileName: "", fileType: "", fileSize: 0 },
+  { id: "receipt-milan", date: "2026-10-08", time: "15:00", title: "Milan Art Nouveau Apartment", category: "hotel", status: "confirmed", amount: 3995.92, persons: 2, note: "2 晚订单已支付，按双人分摊。", fileId: "", fileName: "", fileType: "", fileSize: 0 },
+  { id: "receipt-train", date: "2026-10-03", time: "待定", title: "意大利城际火车票", category: "train", status: "todo", amount: null, persons: 2, note: "购票后上传票据并填写实际金额。", fileId: "", fileName: "", fileType: "", fileSize: 0 },
+  { id: "receipt-attraction", date: "2026-10-04", time: "待定", title: "景点与博物馆门票", category: "attraction", status: "todo", amount: null, persons: 2, note: "确认预约后上传门票和金额。", fileId: "", fileName: "", fileType: "", fileSize: 0 },
+  { id: "receipt-restaurant", date: "2026-10-07", time: "晚间", title: "餐厅预约与消费", category: "restaurant", status: "todo", amount: null, persons: 2, note: "用餐后上传小票。", fileId: "", fileName: "", fileType: "", fileSize: 0 },
+  { id: "receipt-insurance", date: "2026-09-20", time: "", title: "旅行保险", category: "insurance", status: "todo", amount: null, persons: 2, note: "上传保单并填写实付金额。", fileId: "", fileName: "", fileType: "", fileSize: 0 }
+];
+
+let receiptItems = JSON.parse(JSON.stringify(DEFAULT_RECEIPTS));
+
+const REGION_GROUPS = [
+  { id: "milan-arrival", title: "抵达米兰", kicker: "REGION 1", dayIds: ["day-01", "day-02"], note: "上海 → 德里 → 米兰" },
+  { id: "sorrento", title: "索伦托 · 阿马尔菲 · 卡普里", kicker: "REGION 2", dayIds: ["day-03", "day-04", "day-05"], note: "以索伦托为住宿基地" },
+  { id: "rome", title: "罗马", kicker: "REGION 3", dayIds: ["day-06", "day-07"], note: "索伦托 → 罗马" },
+  { id: "milan-return", title: "米兰 · 返程", kicker: "REGION 4", dayIds: ["day-08", "day-09", "day-10", "day-11"], note: "罗马 → 米兰 → 返程" }
+];
+
+function renderEditableDay(day, dayIndex) {
+  const visibleEvents = day.events.filter((event) => filter === "all" || event.status === filter);
+  if (!visibleEvents.length && filter !== "all") return "";
+  const dateNum = Number(day.date.slice(8, 10));
+  const eventHtml = visibleEvents.map((event) => {
+    const status = statusMeta[event.status] || statusMeta.todo;
+    const type = typeIcons[event.type] || "•";
+    const eventIndex = day.events.indexOf(event);
+    return `<article class="timeline-item ${event.type}"><div class="timeline-time">${escapeHtml(event.time)}</div><div class="timeline-rail"><span class="timeline-dot">${type}</span></div><div class="timeline-content"><div class="event-title-row"><div class="event-title">${escapeHtml(event.title)}</div><span class="status ${event.status}">${status.icon} ${status.label}</span></div><div class="event-detail">${escapeHtml(event.detail)}${privateMarkup(event.privateLabel, event.privateValue)}</div><div class="event-actions">${editableMapLinks(event.maps)}<button class="mini-link edit-event" type="button" data-day="${dayIndex}" data-event="${eventIndex}">编辑</button><button class="mini-link danger-link delete-event" type="button" data-day="${dayIndex}" data-event="${eventIndex}">删除</button></div></div></article>`;
+  }).join("");
+  const rec = day.recommendation || { title: "待补充", intro: "", items: [] };
+  const recommendationHtml = `<details class="utility-disclosure recommendation-panel"><summary><span>当日建议 · ${escapeHtml(rec.title)}</span><small>展开</small></summary><div class="recommendation-body">${rec.intro ? `<p>${escapeHtml(rec.intro)}</p>` : ""}${rec.items?.length ? `<ul>${rec.items.map((item) => `<li>${escapeHtml(item)}</li>`).join("")}</ul>` : "<p>暂无建议，可在本日输入框里说明你的偏好。</p>"}</div></details>`;
+  const smartPanelHtml = `<details class="utility-disclosure smart-adjust"><summary><span>一句话调整这一天</span><small>交给 Codex</small></summary><div class="smart-inner"><p>直接写你的想法，例如“太赶了，上午只去斗兽场，下午加万神殿，晚上去掉西班牙广场”。</p><textarea class="smart-input" data-day="${dayIndex}" placeholder="输入这一天的修改要求，不需要按格式填写"></textarea><div class="smart-actions"><span class="smart-caption">生成后复制回当前 Codex 对话发送即可。</span><button class="ghost-btn accent smart-submit" type="button" data-day="${dayIndex}">生成修改指令</button></div></div></details>`;
+  return `<details class="day-card" ${dayIndex === 0 ? "open" : ""}><summary class="day-summary"><div class="date-block"><div class="day">${escapeHtml(day.day)}</div><div class="num">${Number(day.date.slice(5, 7))}/${dateNum}</div><div class="week">${escapeHtml(day.weekday)}</div></div><div class="day-copy"><h3>${escapeHtml(day.city)}</h3><p>${escapeHtml(day.summary)} · 住宿：${escapeHtml(day.stay)}</p></div><span class="day-count">${visibleEvents.length} 项</span><div class="chevron" aria-hidden="true">⌄</div></summary><div class="day-body"><div class="day-utility-bar">${smartPanelHtml}${recommendationHtml}</div><div class="timeline">${eventHtml || '<div class="empty-box">当前筛选下没有行程</div>'}</div></div></details>`;
+}
+
+function enhancedRenderDays() {
+  const container = document.querySelector("#dayList");
+  if (!container) return;
+  const allDayIds = new Set(days.map((day) => day.id));
+  const groups = REGION_GROUPS.map((group) => ({ ...group, dayIds: group.dayIds.filter((id) => allDayIds.has(id)) }));
+  const known = new Set(groups.flatMap((group) => group.dayIds));
+  const leftovers = days.filter((day) => !known.has(day.id)).map((day) => day.id);
+  if (leftovers.length) groups.push({ id: "custom", title: "新增行程", kicker: "CUSTOM", dayIds: leftovers, note: "自行补充的日期" });
+  const html = groups.map((group) => {
+    const groupDays = group.dayIds.map((id) => days.find((day) => day.id === id)).filter(Boolean);
+    const renderedDays = groupDays.map((day) => renderEditableDay(day, days.indexOf(day))).filter(Boolean).join("");
+    if (!renderedDays) return "";
+    const dates = groupDays.map((day) => day.date).sort();
+    const range = dates.length ? `${dates[0].slice(5).replace("-", "/")} - ${dates[dates.length - 1].slice(5).replace("-", "/")}` : "";
+    const stayNames = [...new Set(groupDays.map((day) => day.stay).filter((value) => value && value !== "飞机上" && value !== "到家" && value !== "待定"))];
+    return `<section class="region-card"><header class="region-head"><div><div class="region-kicker">${escapeHtml(group.kicker)}</div><h3>${escapeHtml(group.title)}</h3><p>${escapeHtml(group.note)} · ${escapeHtml(range)}</p></div>${stayNames.length ? `<div class="region-stay"><small>住宿</small><strong>${escapeHtml(stayNames.join(" / "))}</strong></div>` : ""}</header><div class="region-day-list">${renderedDays}</div></section>`;
+  }).join("");
+  container.innerHTML = html || `<div class="panel"><p>当前筛选下没有行程。</p></div>`;
+}
+
+function enhancedRenderStays() {
+  const container = document.querySelector("#stayList"); if (!container) return;
+  container.innerHTML = stays.map((stay, index) => {
+    const status = statusMeta[stay.status] || statusMeta.confirmed;
+    return `<article class="panel stay-card"><div class="stay-index">${escapeHtml(stay.index)} · ${escapeHtml(stay.city)}</div><h3>${escapeHtml(stay.name)} <span class="status ${stay.status}">${status.icon} ${status.label}</span></h3><p class="stay-address">${escapeHtml(stay.address)}</p><div class="stay-meta"><div><small>入住</small><strong>${escapeHtml(stay.checkIn)}</strong></div><div><small>退房</small><strong>${escapeHtml(stay.checkOut)}</strong></div><div><small>确认号</small><strong class="private">${escapeHtml(stay.confirmation)}</strong></div><div><small>价格</small><strong>${escapeHtml(stay.price)}</strong></div></div><p style="margin-top:12px">${escapeHtml(stay.note)}</p><div class="stay-actions"><a class="mini-link" href="${mapsUrl(`${stay.name}, ${stay.address}`)}" target="_blank" rel="noreferrer">📍 地图</a><a class="mini-link" href="tel:${escapeHtml(stay.phone.replace(/\s/g, ""))}">联系住宿</a><button class="mini-link edit-stay" type="button" data-stay="${index}">编辑</button><button class="mini-link danger-link delete-stay" type="button" data-stay="${index}">删除</button></div></article>`;
+  }).join("");
+}
+
+function enhancedRenderTravel() {
+  const flightBox = document.querySelector("#flightList"); const railBox = document.querySelector("#railList"); if (!flightBox || !railBox) return;
+  const flightEvents = days.flatMap((day) => day.events.filter((event) => event.type === "flight" && event.status === "confirmed").map((event) => ({ ...event, date: day.date.slice(5).replace("-", "/") })));
+  flightBox.innerHTML = flightEvents.map((event) => `<div class="panel"><div class="event-title-row"><h3>${escapeHtml(event.date)} · ${escapeHtml(event.title)}</h3><span class="status confirmed">✓ 已确认</span></div><p>${escapeHtml(event.detail)}${privateMarkup(event.privateLabel, event.privateValue)}</p><div class="event-actions">${editableMapLinks(event.maps)}</div></div>`).join("");
+  railBox.innerHTML = intercity.map((leg) => `<div class="panel"><div class="event-title-row"><h3>${escapeHtml(leg.date)} · ${escapeHtml(leg.route)}</h3><span class="status ${leg.status}">! ${statusMeta[leg.status].label}</span></div><p>${escapeHtml(leg.mode)} · ${escapeHtml(leg.note)}</p></div>`).join("");
+}
+
+function openReceiptFileDb() {
+  return new Promise((resolve, reject) => {
+    const request = indexedDB.open("italyItineraryFiles", 1);
+    request.onupgradeneeded = () => { if (!request.result.objectStoreNames.contains("files")) request.result.createObjectStore("files"); };
+    request.onsuccess = () => resolve(request.result);
+    request.onerror = () => reject(request.error);
+  });
+}
+async function saveReceiptFile(id, file) {
+  const db = await openReceiptFileDb();
+  return new Promise((resolve, reject) => {
+    const tx = db.transaction("files", "readwrite");
+    tx.objectStore("files").put(file, id);
+    tx.oncomplete = () => { db.close(); resolve(); };
+    tx.onerror = () => { db.close(); reject(tx.error); };
+  });
+}
+async function getReceiptFile(id) {
+  const db = await openReceiptFileDb();
+  return new Promise((resolve, reject) => {
+    const tx = db.transaction("files", "readonly");
+    const request = tx.objectStore("files").get(id);
+    request.onsuccess = () => { db.close(); resolve(request.result || null); };
+    request.onerror = () => { db.close(); reject(request.error); };
+  });
+}
+async function deleteReceiptFile(id) {
+  if (!id) return;
+  const db = await openReceiptFileDb();
+  return new Promise((resolve, reject) => {
+    const tx = db.transaction("files", "readwrite");
+    tx.objectStore("files").delete(id);
+    tx.oncomplete = () => { db.close(); resolve(); };
+    tx.onerror = () => { db.close(); reject(tx.error); };
+  });
+}
+async function openReceiptFile(id) {
+  const file = await getReceiptFile(id);
+  if (!file) return toast("找不到本地票据文件，请重新上传");
+  const url = URL.createObjectURL(file);
+  window.open(url, "_blank", "noopener");
+  setTimeout(() => URL.revokeObjectURL(url), 60000);
+}
+function receiptTotals() {
+  const confirmed = receiptItems.filter((item) => Number.isFinite(Number(item.amount)) && Number(item.amount) > 0);
+  const total = confirmed.reduce((sum, item) => sum + Number(item.amount), 0);
+  const perPerson = confirmed.reduce((sum, item) => sum + Number(item.amount) / Math.max(1, Number(item.persons) || 1), 0);
+  return { total, perPerson, count: confirmed.length };
+}
+function enhancedRenderTickets() {
+  const box = document.querySelector("#ticketList"); if (!box) return;
+  const sorted = [...receiptItems].sort((a, b) => `${a.date || ""} ${a.time || ""}`.localeCompare(`${b.date || ""} ${b.time || ""}`));
+  box.innerHTML = `<div class="receipt-timeline">${sorted.map((item) => {
+    const category = RECEIPT_CATEGORIES[item.category] || RECEIPT_CATEGORIES.other;
+    const status = statusMeta[item.status] || statusMeta.todo;
+    const amount = Number(item.amount);
+    const hasAmount = Number.isFinite(amount) && amount > 0;
+    const persons = Math.max(1, Number(item.persons) || 1);
+    const perPerson = hasAmount ? amount / persons : null;
+    const dateText = item.date ? item.date.slice(5).replace("-", "/") : "待定";
+    return `<article class="timeline-item receipt-timeline-item ${item.category}"><div class="timeline-time">${escapeHtml(dateText)}<br>${escapeHtml(item.time || "")}</div><div class="timeline-rail"><span class="timeline-dot">${category.icon}</span></div><div class="timeline-content"><div class="event-title-row"><div class="event-title">${escapeHtml(item.title)}</div><span class="status ${item.status}">${status.icon} ${status.label}</span></div><div class="receipt-amount">${hasAmount ? `人均 <strong>${currency.format(perPerson)}</strong><span>双人合计 ${currency.format(amount)}</span>` : `<span>金额待上传</span>`}</div><div class="event-detail">${escapeHtml(item.note || "")}</div>${item.fileId ? `<div class="file-chip">📎 ${escapeHtml(item.fileName || "本地票据")} · ${Math.max(1, Math.round((item.fileSize || 0) / 1024))} KB</div>` : ""}<div class="event-actions">${item.fileId ? `<button class="mini-link view-ticket-file" type="button" data-file="${escapeHtml(item.fileId)}">查看票据</button>` : ""}<button class="mini-link edit-ticket" type="button" data-ticket="${escapeHtml(item.id)}">${item.fileId ? "编辑 / 替换" : "上传 / 编辑"}</button><button class="mini-link danger-link delete-ticket" type="button" data-ticket="${escapeHtml(item.id)}">删除</button></div></div></article>`;
+  }).join("")}</div>`;
+}
+function enhancedRenderExpenses() {
+  const totals = receiptTotals();
+  const box = document.querySelector("#expenseList");
+  const quickTotal = document.querySelector("#quickTotal");
+  if (quickTotal) quickTotal.textContent = currency.format(totals.perPerson);
+  if (!box) return;
+  const categoryRows = Object.entries(RECEIPT_CATEGORIES).map(([key, meta]) => {
+    const perPerson = receiptItems.filter((item) => item.category === key).reduce((sum, item) => {
+      const amount = Number(item.amount);
+      return sum + (Number.isFinite(amount) && amount > 0 ? amount / Math.max(1, Number(item.persons) || 1) : 0);
+    }, 0);
+    return perPerson > 0 ? `<div class="summary-row"><span>${meta.icon} ${meta.label}</span><strong>${currency.format(perPerson)} / 人</strong></div>` : "";
+  }).join("");
+  box.innerHTML = `${categoryRows}<div class="summary-row"><span>已登记票据</span><strong>${totals.count} 张</strong></div><div class="summary-row total"><span>人均已确认</span><strong>${currency.format(totals.perPerson)}</strong></div><div class="summary-row"><span>双人合计</span><strong>${currency.format(totals.total)}</strong></div>`;
+}
+
+function installEditorDialogs() {
+  if (document.querySelector("#editableDialogs")) return;
+  const host = document.createElement("div"); host.id = "editableDialogs";
+  host.innerHTML = `
+    <dialog class="editor-dialog" id="eventDialog"><div class="dialog-head"><h3 id="eventDialogTitle">编辑行程</h3><button class="dialog-close" type="button" data-close>×</button></div><form class="editor-form" id="eventForm"><label>日期<select name="day" id="eventDay" required></select></label><label>时间<input name="time" placeholder="例如 14:00 或 下午"></label><label>类型<select name="type"><option value="flight">航班</option><option value="train">铁路</option><option value="boat">渡轮</option><option value="hotel">住宿</option><option value="place">景点</option><option value="note">备注</option></select></label><label>状态<select name="status"><option value="confirmed">已确认</option><option value="booked">已预订</option><option value="suggested">建议</option><option value="todo">待补</option></select></label><label class="full">标题<input name="title" required placeholder="例如 斗兽场预约"></label><label class="full">详情<textarea name="detail" placeholder="时间、订单、注意事项等"></textarea></label><label>隐私标签<input name="privateLabel" placeholder="例如 确认号"></label><label>隐私内容<input name="privateValue" placeholder="开启隐私模式后会模糊"></label><label class="full">地图定位，每行一个：名称|搜索地点<textarea class="maps-input" name="maps" placeholder="米兰中央车站|Milano Centrale Station, Milan&#10;那不勒斯中央车站|Napoli Centrale Station, Naples"></textarea></label><div class="form-actions"><button class="mini-link delete-action" id="deleteEvent" type="button" hidden>删除</button><button class="ghost-btn" type="button" data-close>取消</button><button class="ghost-btn accent" type="submit">保存</button></div></form></dialog>
+    <dialog class="editor-dialog" id="stayDialog"><div class="dialog-head"><h3 id="stayDialogTitle">编辑住宿</h3><button class="dialog-close" type="button" data-close>×</button></div><form class="editor-form" id="stayForm"><label>序号<input name="index"></label><label>城市<input name="city"></label><label>名称<input name="name" required></label><label>状态<select name="status"><option value="confirmed">已确认</option><option value="booked">已预订</option><option value="suggested">建议</option><option value="todo">待补</option></select></label><label class="full">地址<input name="address"></label><label>入住<input name="checkIn"></label><label>退房<input name="checkOut"></label><label>确认号<input name="confirmation"></label><label>电话<input name="phone"></label><label>价格<input name="price"></label><label>备注<input name="note"></label><div class="form-actions"><button class="mini-link delete-action" id="deleteStay" type="button" hidden>删除</button><button class="ghost-btn" type="button" data-close>取消</button><button class="ghost-btn accent" type="submit">保存</button></div></form></dialog>
+    <dialog class="editor-dialog" id="ticketDialog"><div class="dialog-head"><h3 id="ticketDialogTitle">编辑票据</h3><button class="dialog-close" type="button" data-close>×</button></div><form class="editor-form" id="ticketForm"><label>日期<input name="date" type="date"></label><label>时间<input name="time" placeholder="例如 14:00"></label><label class="full">票据名称<input name="title" required placeholder="例如 罗马斗兽场门票"></label><label>类别<select name="category"><option value="flight">机票</option><option value="hotel">住宿</option><option value="train">火车</option><option value="boat">渡轮</option><option value="attraction">景点</option><option value="restaurant">餐饮</option><option value="insurance">保险</option><option value="other">其他</option></select></label><label>状态<select name="status"><option value="confirmed">已确认</option><option value="booked">已预订</option><option value="suggested">建议</option><option value="todo">待补</option></select></label><label>实付总额<input name="amount" type="number" min="0" step="0.01" placeholder="填写票据总金额"></label><label>分摊人数<input name="persons" type="number" min="1" step="1" value="2"></label><label class="full">备注<textarea name="note" placeholder="付款方式、订单号或报销信息"></textarea></label><label class="full">上传票据（图片或 PDF）<input name="file" type="file" accept="image/*,.pdf"></label><div class="form-actions"><button class="mini-link delete-action" id="deleteTicket" type="button" hidden>删除</button><button class="ghost-btn" type="button" data-close>取消</button><button class="ghost-btn accent" type="submit">保存并重算花费</button></div></form></dialog>
+    <dialog class="editor-dialog" id="smartDialog"><div class="dialog-head"><h3>交给 Codex 的修改指令</h3><button class="dialog-close" type="button" data-close>×</button></div><div class="editor-form"><p class="prompt-note full">已尝试复制到剪贴板。回到当前 Codex 对话，直接粘贴发送，我就能识别要求、重新规划并修改当天行程。</p><textarea class="prompt-box full" id="smartPrompt" readonly></textarea><div class="form-actions"><button class="ghost-btn" type="button" id="copySmartPrompt">再次复制</button><button class="ghost-btn accent" type="button" data-close>已复制，关闭</button></div></div></dialog>`;
+  document.body.appendChild(host);
+}
+
+let editingEventRef = null; let editingStayRef = null; let editingTicketRef = null;
+function fillDaySelect(selectedId) { const select = document.querySelector("#eventDay"); select.innerHTML = days.map((day) => `<option value="${escapeHtml(day.id)}" ${day.id === selectedId ? "selected" : ""}>${escapeHtml(day.date)} · ${escapeHtml(day.city)}</option>`).join(""); }
+function openEventEditor(dayIndex, eventIndex = null) {
+  const day = days[dayIndex]; editingEventRef = { dayId: day.id, eventId: eventIndex === null ? null : day.events[eventIndex].id };
+  const event = eventIndex === null ? { time: "", type: "place", status: "suggested", title: "", detail: "", privateLabel: "", privateValue: "", maps: [] } : day.events[eventIndex];
+  fillDaySelect(day.id); const f = document.querySelector("#eventForm"); f.elements.time.value = event.time || ""; f.elements.type.value = event.type || "place"; f.elements.status.value = event.status || "suggested"; f.elements.title.value = event.title || ""; f.elements.detail.value = event.detail || ""; f.elements.privateLabel.value = event.privateLabel || ""; f.elements.privateValue.value = event.privateValue || ""; f.elements.maps.value = editableMapsText(event.maps);
+  document.querySelector("#eventDialogTitle").textContent = eventIndex === null ? "新增行程" : "编辑行程"; document.querySelector("#deleteEvent").hidden = eventIndex === null; document.querySelector("#eventDialog").showModal();
+}
+function openStayEditor(index = null) {
+  editingStayRef = index; const stay = index === null ? { index: `STAY ${stays.length + 1}`, city: "", name: "", status: "todo", address: "", checkIn: "", checkOut: "", confirmation: "", phone: "", price: "", note: "" } : stays[index]; const f = document.querySelector("#stayForm"); ["index","city","name","status","address","checkIn","checkOut","confirmation","phone","price","note"].forEach((key) => f.elements[key].value = stay[key] || ""); document.querySelector("#stayDialogTitle").textContent = index === null ? "新增住宿" : "编辑住宿"; document.querySelector("#deleteStay").hidden = index === null; document.querySelector("#stayDialog").showModal();
+}
+function openTicketEditor(id = null) {
+  editingTicketRef = id;
+  const item = id ? receiptItems.find((receipt) => receipt.id === id) : { date: new Date().toISOString().slice(0, 10), time: "", title: "", category: "other", status: "todo", amount: "", persons: 2, note: "", fileId: "", fileName: "", fileType: "", fileSize: 0 };
+  const f = document.querySelector("#ticketForm");
+  ["date","time","title","category","status","amount","persons","note"].forEach((key) => { f.elements[key].value = item[key] ?? ""; });
+  f.elements.file.value = "";
+  document.querySelector("#ticketDialogTitle").textContent = id ? "编辑票据" : "新增票据";
+  document.querySelector("#deleteTicket").hidden = !id;
+  document.querySelector("#ticketDialog").showModal();
+}
+function editableRefresh(travel = true) { saveEditableData(); enhancedRenderDays(); enhancedRenderStays(); if (travel) enhancedRenderTravel(); enhancedRenderTickets(); enhancedRenderExpenses(); }
+
+function buildDayCodexPrompt(day, request) {
+  const lines = day.events.map((event) => {
+    const status = statusMeta[event.status]?.label || event.status;
+    const privateText = event.privateLabel && event.privateValue ? `，${event.privateLabel}: ${event.privateValue}` : "";
+    return `- [${status}] ${event.time}｜${event.title}｜${event.detail}${privateText}`;
+  }).join("\n");
+  const advice = day.recommendation?.items?.length ? day.recommendation.items.map((item) => `- ${item}`).join("\n") : "- 暂无";
+  return `请帮我修改意大利行程中的这一天：\n\n日期：${day.date}（${day.day} · ${day.weekday}）\n城市/路线：${day.city}\n住宿：${day.stay}\n\n我的修改要求：\n${request}\n\n当前已排行程：\n${lines || "- 暂无"}\n\n当前建议：\n${advice}\n\n请你识别我的真实意图，按实际地理顺序、开放时间和交通耗时重新规划当天行程。已经标记“已确认/已预订”的航班、酒店和订单不要擅自修改；如与用户要求冲突，请明确指出。完成后直接修改行程数据，并简要列出你改动的内容。`;
+}
+async function copySmartPrompt(text) {
+  try {
+    await navigator.clipboard.writeText(text);
+    return true;
+  } catch (error) {
+    const area = document.createElement("textarea");
+    area.value = text;
+    area.style.position = "fixed";
+    area.style.opacity = "0";
+    document.body.appendChild(area);
+    area.select();
+    const ok = document.execCommand("copy");
+    area.remove();
+    return ok;
+  }
+}
+function openSmartPrompt(dayIndex, request) {
+  const day = days[dayIndex];
+  const text = buildDayCodexPrompt(day, request);
+  const promptBox = document.querySelector("#smartPrompt");
+  if (promptBox) promptBox.value = text;
+  copySmartPrompt(text);
+  document.querySelector("#smartDialog")?.showModal();
+}
+
+function bindEditableControls() {
+  document.querySelector("#addDayBtn")?.addEventListener("click", () => {
+    const last = days[days.length - 1]; const nextDate = last ? new Date(new Date(`${last.date}T12:00:00`).getTime() + 86400000).toISOString().slice(0, 10) : "2026-10-01";
+    days.push({ id: uidEditable("day"), date: nextDate, day: `DAY ${days.length + 1}`, weekday: editableWeekday(nextDate), city: "新行程", stay: "待定", summary: "在当天输入框里写下安排，交给 Codex 规划。", recommendation: { title: "待补充", intro: "", items: [] }, events: [] });
+    editableRefresh(); toast("已新增一天，请在当天输入框里写下安排");
+  });
+  document.querySelector("#resetBtn")?.addEventListener("click", () => {
+    if (!confirm("确认恢复为最初导入的行程吗？你当前的手动修改会被清除。")) return;
+    localStorage.removeItem(EDIT_STORAGE_KEY); days.splice(0, days.length, ...JSON.parse(JSON.stringify(ORIGINAL_DAYS))); stays.splice(0, stays.length, ...JSON.parse(JSON.stringify(ORIGINAL_STAYS))); receiptItems = JSON.parse(JSON.stringify(ORIGINAL_RECEIPTS)); applyEditableEnhancements(); editableRefresh(); toast("已恢复初始行程");
+  });
+  document.querySelector("#addStayBtn")?.addEventListener("click", () => openStayEditor(null));
+  document.querySelector("#addTicketBtn")?.addEventListener("click", () => openTicketEditor(null));
+
+  document.querySelector("#dayList")?.addEventListener("click", (event) => {
+    const button = event.target.closest("button.edit-event,button.delete-event,button.smart-submit"); if (!button) return;
+    const dayIndex = Number(button.dataset.day);
+    if (button.classList.contains("smart-submit")) {
+      const input = button.closest(".smart-adjust")?.querySelector(".smart-input");
+      const request = input?.value.trim();
+      if (!request) return toast("先写下你希望怎么调整这一天");
+      return openSmartPrompt(dayIndex, request);
+    }
+    const eventIndex = Number(button.dataset.event);
+    if (button.classList.contains("edit-event")) return openEventEditor(dayIndex, eventIndex);
+    if (button.classList.contains("delete-event")) {
+      if (!confirm(`确认删除“${days[dayIndex].events[eventIndex].title}”吗？`)) return;
+      days[dayIndex].events.splice(eventIndex, 1); editableRefresh(); toast("行程已删除");
+    }
+  });
+  document.querySelector("#ticketList")?.addEventListener("click", async (event) => {
+    const button = event.target.closest("button.edit-ticket,button.delete-ticket,button.view-ticket-file"); if (!button) return;
+    const id = button.dataset.ticket || button.dataset.file;
+    if (button.classList.contains("edit-ticket")) return openTicketEditor(id);
+    if (button.classList.contains("view-ticket-file")) return openReceiptFile(id);
+    const item = receiptItems.find((receipt) => receipt.id === id);
+    if (item && confirm(`确认删除“${item.title}”吗？`)) { await deleteReceiptFile(item.fileId); receiptItems = receiptItems.filter((receipt) => receipt.id !== id); editableRefresh(); toast("票据已删除"); }
+  });
+
+  document.querySelector("#stayList")?.addEventListener("click", (event) => {
+    const button = event.target.closest("button.edit-stay,button.delete-stay"); if (!button) return;
+    const index = Number(button.dataset.stay);
+    if (button.classList.contains("edit-stay")) return openStayEditor(index);
+    if (button.classList.contains("delete-stay")) {
+      if (!confirm(`确认删除“${stays[index].name}”吗？`)) return;
+      stays.splice(index, 1); editableRefresh(); toast("住宿已删除");
+    }
+  });
+
+  document.querySelector("#eventForm")?.addEventListener("submit", (event) => {
+    event.preventDefault(); const f = event.currentTarget; const targetDay = days.find((day) => day.id === f.elements.day.value); if (!targetDay) return;
+    const payload = { time: f.elements.time.value.trim(), type: f.elements.type.value, status: f.elements.status.value, title: f.elements.title.value.trim(), detail: f.elements.detail.value.trim(), privateLabel: f.elements.privateLabel.value.trim(), privateValue: f.elements.privateValue.value.trim(), maps: parseEditableMaps(f.elements.maps.value) };
+    if (!payload.title) return toast("请填写行程标题");
+    if (editingEventRef?.eventId) {
+      const oldDay = days.find((day) => day.id === editingEventRef.dayId); const oldIndex = oldDay.events.findIndex((item) => item.id === editingEventRef.eventId);
+      if (oldIndex >= 0) oldDay.events.splice(oldIndex, 1); payload.id = editingEventRef.eventId; targetDay.events.push(payload);
+    } else { payload.id = uidEditable("event"); targetDay.events.push(payload); }
+    days.sort((a, b) => a.date.localeCompare(b.date)); editableRefresh(); document.querySelector("#eventDialog").close(); toast("行程已保存");
+  });
+  document.querySelector("#deleteEvent")?.addEventListener("click", () => {
+    const day = days.find((item) => item.id === editingEventRef?.dayId); const index = day?.events.findIndex((item) => item.id === editingEventRef?.eventId);
+    if (index >= 0 && confirm("确认删除这条行程吗？")) { day.events.splice(index, 1); editableRefresh(); document.querySelector("#eventDialog").close(); toast("行程已删除"); }
+  });
+  document.querySelector("#ticketForm")?.addEventListener("submit", async (event) => {
+    event.preventDefault(); const f = event.currentTarget; const existing = editingTicketRef ? receiptItems.find((item) => item.id === editingTicketRef) : null; const file = f.elements.file.files[0] || null; const fileId = file ? (existing?.fileId || uidEditable("ticket-file")) : (existing?.fileId || ""); if (file) await saveReceiptFile(fileId, file); const payload = { id: existing?.id || uidEditable("receipt"), date: f.elements.date.value, time: f.elements.time.value.trim(), title: f.elements.title.value.trim(), category: f.elements.category.value, status: f.elements.status.value, amount: f.elements.amount.value === "" ? null : Number(f.elements.amount.value), persons: Math.max(1, Number(f.elements.persons.value) || 1), note: f.elements.note.value.trim(), fileId, fileName: file ? file.name : (existing?.fileName || ""), fileType: file ? file.type : (existing?.fileType || ""), fileSize: file ? file.size : (existing?.fileSize || 0) }; if (!payload.title) return toast("请填写票据名称"); if (existing) Object.assign(existing, payload); else receiptItems.push(payload); editableRefresh(); document.querySelector("#ticketDialog").close(); toast("票据已保存，花费已重新计算");
+  });
+  document.querySelector("#deleteTicket")?.addEventListener("click", async () => {
+    const item = receiptItems.find((receipt) => receipt.id === editingTicketRef); if (item && confirm(`确认删除“${item.title}”吗？`)) { await deleteReceiptFile(item.fileId); receiptItems = receiptItems.filter((receipt) => receipt.id !== item.id); editableRefresh(); document.querySelector("#ticketDialog").close(); toast("票据已删除，花费已重新计算"); }
+  });
+  document.querySelector("#stayForm")?.addEventListener("submit", (event) => {
+    event.preventDefault(); const f = event.currentTarget; const payload = {}; ["index","city","name","status","address","checkIn","checkOut","confirmation","phone","price","note"].forEach((key) => payload[key] = f.elements[key].value.trim()); if (!payload.name) return toast("请填写住宿名称");
+    if (editingStayRef === null) { payload.id = uidEditable("stay"); stays.push(payload); } else { payload.id = stays[editingStayRef].id; stays[editingStayRef] = payload; }
+    editableRefresh(); document.querySelector("#stayDialog").close(); toast("住宿已保存");
+  });
+  document.querySelector("#deleteStay")?.addEventListener("click", () => {
+    if (editingStayRef !== null && confirm("确认删除这条住宿吗？")) { stays.splice(editingStayRef, 1); editableRefresh(); document.querySelector("#stayDialog").close(); toast("住宿已删除"); }
+  });
+  document.querySelector("#copySmartPrompt")?.addEventListener("click", async () => { const text = document.querySelector("#smartPrompt")?.value || ""; const ok = await copySmartPrompt(text); toast(ok ? "修改指令已复制" : "复制失败，请手动选择文本"); });
+  document.querySelectorAll("[data-close]").forEach((button) => button.addEventListener("click", () => button.closest("dialog")?.close()));
+}
+
+const ORIGINAL_DAYS = JSON.parse(JSON.stringify(days));
+const ORIGINAL_STAYS = JSON.parse(JSON.stringify(stays));
+const ORIGINAL_RECEIPTS = JSON.parse(JSON.stringify(receiptItems));
+loadEditableData();
+applyEditableEnhancements();
+renderDays = enhancedRenderDays;
+renderStays = enhancedRenderStays;
+renderTravel = enhancedRenderTravel;
+renderTickets = enhancedRenderTickets;
+renderExpenses = enhancedRenderExpenses;
+document.addEventListener("DOMContentLoaded", () => { installEditorDialogs(); bindEditableControls(); });
+
+  </script>
+</body>
+</html>
